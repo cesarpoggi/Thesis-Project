@@ -55,7 +55,7 @@ PP2020_pag <- select(PP2020_pag, c("orgn"))
 
 Editar variables requeridas
 ```{r}
-
+#Por ahora solo nombre pero no se utilizará
 ```
 
 Añadir variables dicotómicas de año (desde 2015 al 2020) a cada base 
@@ -122,7 +122,7 @@ PP_FULL <- df_lista %>%
 
 Reordenar alfabeticamente según nombre de organización
 ```{r}
-PP_FULL[order(PP_FULL$orgn),]
+PP_FULL<-PP_FULL[order(PP_FULL$orgn),]
 ```
 
 Poner etiqueda a cada organización manualmente
