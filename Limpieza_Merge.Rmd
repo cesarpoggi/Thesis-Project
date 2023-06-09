@@ -122,12 +122,27 @@ PP_FULL <- df_lista %>%
 
 Reordenar alfabeticamente según nombre de organización
 ```{r}
+PP_FULL$index_OG_col <- row.names(PP_FULL)
 PP_FULL<-PP_FULL[order(PP_FULL$orgn),]
 ```
 
+Cambiar espacio vacios con NA
+```{r}
+PP_FULL$tipo_orgn <- replace(PP_FULL$tipo_orgn, PP_FULL$tipo_orgn=='', NA)
+```
+
+
 Poner etiqueda a cada organización manualmente
 ```{r}
+PP_FULL$orgn_mod <- NA
+PP_FULL <- PP_FULL[,c(1,9,2:8)]
 
+#Para Asentamiento Humano poner AH antes del número
+
+#Asentamiento 1ro de Mayo
+PP_FULL1 <- PP_FULL %>%
+  mutate(
+    orgn_mod = case_when(index_OG_col == 2040 | index_OG_col == 2041 | index_OG_col == 2503 | index_OG_col == 2625 ~ "AH001"))
 ```
 
 
