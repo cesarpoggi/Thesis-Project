@@ -136,13 +136,25 @@ Poner etiqueda a cada organización manualmente
 ```{r}
 PP_FULL$orgn_mod <- NA
 PP_FULL <- PP_FULL[,c(1,9,2:8)]
+```
 
+
+```{r}
 #Para Asentamiento Humano poner AH antes del número
 
-#Asentamiento 1ro de Mayo
+
 PP_FULL1 <- PP_FULL %>%
   mutate(
-    orgn_mod = case_when(index_OG_col == 2040 | index_OG_col == 2041 | index_OG_col == 2503 | index_OG_col == 2625 ~ "AH001"))
+    orgn_mod = case_when(index_OG_col == 2040 | index_OG_col == 2041 | index_OG_col == 2503 | index_OG_col == 2625 ~ "AH001", #Asentamiento 1ro de Mayo
+                         
+                         index_OG_col == 1586 | index_OG_col == 1828 | index_OG_col == 2719 | index_OG_col == 2774 | index_OG_col == 2767 | index_OG_col == 2786 ~ "AH002.1", #Asentamiento Oasis de Villa General diferentes grupos y sectores
+                         
+                         index_OG_col == 391 | index_OG_col == 392 | index_OG_col == 877 | index_OG_col == 878 | index_OG_col == 869 | index_OG_col == 870 | index_OG_col == 445 | index_OG_col == 446 ~ "AH002.0", #Asentamiento Oasis de Villa Junta Directiva Central
+                         
+                         index_OG_col == 2707 | index_OG_col == 2714 | index_OG_col == 1561 | index_OG_col == 1844 | index_OG_col == 2692 | index_OG_col == 2800 ~ "AH002.1", #Asentamiento Oasis de Villa Asociaciones/Organización de Familias
+                         
+                         
+                         ))
 ```
 
 
