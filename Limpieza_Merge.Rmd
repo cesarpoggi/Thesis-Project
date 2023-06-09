@@ -1,0 +1,153 @@
+---
+title: "Base de datos - Merge"
+author: "Cesar Poggi"
+date: "2023-06-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(rio)
+library(tidyverse)
+library(dplyr)
+```
+
+
+## Limpieza
+
+Objetos con los links de las bases
+```{r}
+PP2015_pag_html <- "https://www.dropbox.com/s/0l8wp5baa2lwqli/agentes_participantes_2015_pagina.csv?dl=1"
+PP2016_pag_html <- "https://www.dropbox.com/s/hijxy0loo02ogsm/agentes_participantes_2016_pagina.csv?dl=1"
+PP2017_pag_html <- "https://www.dropbox.com/s/yiufrwyomg52wfs/agentes_participantes_2017_pagina.csv?dl=1"
+PP2018_pag_html <- "https://www.dropbox.com/s/9gcvp4ylwnds1yu/agentes_participantes_2018_pagina.csv?dl=1"
+PP2020_pag_html <- "https://www.dropbox.com/s/yqkr40yclkp6n1t/agentes_participantes_2020_pagina.csv?dl=1"
+```
+
+Importación de las bases desde los objetos
+```{r}
+PP2015_pag=import(PP2015_pag_html, encoding = 'UTF-8')
+PP2016_pag=import(PP2016_pag_html, encoding = 'UTF-8')
+PP2017_pag=import(PP2017_pag_html, encoding = 'UTF-8')
+PP2018_pag=import(PP2018_pag_html, encoding = 'UTF-8')
+PP2020_pag=import(PP2020_pag_html, encoding = 'UTF-8')
+```
+
+Quedarnos con variables elementales
+```{r}
+#list_dfs <- dplyr::lst(PP2015_pag, PP2016_pag, PP2017_pag, PP2018_pag, PP2020_pag)
+
+#list_dfs <- lapply(list_dfs, function(x) x[names(x) == c("tipo_orgn", "orgn")])
+#list2env(list_dfs, .GlobalEnv)
+
+#list_dfs2 <- lapply(list_dfs, subset, select = c("orgn", "tipo_orgn"))
+#list2env(list_dfs2, .GlobalEnv)
+
+PP2015_pag <- select(PP2015_pag, c("orgn", "tipo_orgn"))
+PP2016_pag <- select(PP2016_pag, c("orgn", "tipo_orgn"))
+PP2017_pag <- select(PP2017_pag, c("orgn", "tipo_orgn"))
+PP2018_pag <- select(PP2018_pag, c("orgn", "tipo_orgn"))
+PP2020_pag <- select(PP2020_pag, c("orgn"))
+```
+
+Editar variables requeridas
+```{r}
+#Por ahora solo nombre pero no se utilizará
+```
+
+Añadir variables dicotómicas de año (desde 2015 al 2020) a cada base 
+```{r}
+PP2015_pag$AÑO2015 <- c("1") 
+PP2015_pag$AÑO2016 <- c("0") 
+PP2015_pag$AÑO2017 <- c("0") 
+PP2015_pag$AÑO2018 <- c("0") 
+PP2015_pag$AÑO2020 <- c("0") 
+
+PP2016_pag$AÑO2015 <- c("0") 
+PP2016_pag$AÑO2016 <- c("1") 
+PP2016_pag$AÑO2017 <- c("0") 
+PP2016_pag$AÑO2018 <- c("0") 
+PP2016_pag$AÑO2020 <- c("0") 
+
+PP2017_pag$AÑO2015 <- c("0") 
+PP2017_pag$AÑO2016 <- c("0") 
+PP2017_pag$AÑO2017 <- c("1") 
+PP2017_pag$AÑO2018 <- c("0") 
+PP2017_pag$AÑO2020 <- c("0")
+
+PP2018_pag$AÑO2015 <- c("0") 
+PP2018_pag$AÑO2016 <- c("0") 
+PP2018_pag$AÑO2017 <- c("0") 
+PP2018_pag$AÑO2018 <- c("1") 
+PP2018_pag$AÑO2020 <- c("0")
+
+PP2020_pag$AÑO2015 <- c("0") 
+PP2020_pag$AÑO2016 <- c("0") 
+PP2020_pag$AÑO2017 <- c("0") 
+PP2020_pag$AÑO2018 <- c("0") 
+PP2020_pag$AÑO2020 <- c("1")
+```
+
+
+Cambio de los strings de las variables para no hayan caracteres especiales
+```{r}
+#PP2015_pag$nombre <- iconv(PP2015_pag$nombre, to='ASCII//TRANSLIT')
+#PP2016_pag$nombre <- iconv(PP2016_pag$nombre, to='ASCII//TRANSLIT')
+#PP2017_pag$nombre <- iconv(PP2017_pag$nombre, to='ASCII//TRANSLIT')
+#PP2018_pag$nombre <- iconv(PP2018_pag$nombre, to='ASCII//TRANSLIT')
+#PP2020_pag$nombre <- iconv(PP2020_pag$nombre, to='ASCII//TRANSLIT')
+
+PP2015_pag$orgn <- iconv(PP2015_pag$orgn, to='ASCII//TRANSLIT')
+PP2016_pag$orgn <- iconv(PP2016_pag$orgn, to='ASCII//TRANSLIT')
+PP2017_pag$orgn <- iconv(PP2017_pag$orgn, to='ASCII//TRANSLIT')
+PP2018_pag$orgn <- iconv(PP2018_pag$orgn, to='ASCII//TRANSLIT')
+PP2020_pag$orgn <- iconv(PP2020_pag$orgn, to='ASCII//TRANSLIT')
+
+PP2015_pag$tipo_orgn <- iconv(PP2015_pag$tipo_orgn, to='ASCII//TRANSLIT')
+PP2016_pag$tipo_orgn <- iconv(PP2016_pag$tipo_orgn, to='ASCII//TRANSLIT')
+PP2017_pag$tipo_orgn <- iconv(PP2017_pag$tipo_orgn, to='ASCII//TRANSLIT')
+PP2018_pag$tipo_orgn <- iconv(PP2018_pag$tipo_orgn, to='ASCII//TRANSLIT')
+```
+
+Merge de bases
+```{r}
+df_lista <- list(PP2015_pag, PP2016_pag, PP2017_pag, PP2018_pag, PP2020_pag)
+
+PP_FULL <- df_lista %>%
+  reduce(full_join)
+```
+
+Reordenar alfabeticamente según nombre de organización
+```{r}
+PP_FULL<-PP_FULL[order(PP_FULL$orgn),]
+```
+
+Poner etiqueda a cada organización manualmente
+```{r}
+
+```
+
+
+Poner etiqueta a los tipos de organizaciones según la identificación de palabras clave (Ejem: "vaso de leche", "comedor popular", "agropecuario", etc.)
+```{r}
+
+```
+
+Subset de variables: organizaciones y variables de año / tipo de organización y variables de año
+```{r}
+
+```
+
+Juntar filas según etiqueta de organizaciones / tipo de organizaciones
+```{r}
+
+```
+
+Creación de nueva columna de suma de variables dicotómicas de año
+```{r}
+
+```
+
