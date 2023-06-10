@@ -131,18 +131,66 @@ Cambiar espacio vacios con NA
 PP_FULL$tipo_orgn <- replace(PP_FULL$tipo_orgn, PP_FULL$tipo_orgn=='', NA)
 ```
 
-
-Poner etiqueda a cada organización manualmente
+Hacer nueva columna de organización modificada 
 ```{r}
 PP_FULL$orgn_mod <- NA
 PP_FULL <- PP_FULL[,c(1,9,2:8)]
+```
 
-#Para Asentamiento Humano poner AH antes del número
+Poner etiqueda a cada organización manualmente
+```{r}
+#Para Asentamiento Humano poner AH antes del número que representa una unidad
+#Para Asociación de Propietarios AP antes del número que representa una unidad
+#Para Vaso de Leche VL antes del número que representa una unidad
+#Para Otro Tipo de Org. OR antes del número que representa una unidad
 
-#Asentamiento 1ro de Mayo
+
+
 PP_FULL1 <- PP_FULL %>%
   mutate(
-    orgn_mod = case_when(index_OG_col == 2040 | index_OG_col == 2041 | index_OG_col == 2503 | index_OG_col == 2625 ~ "AH001"))
+    orgn_mod = case_when(index_OG_col == 2040 | index_OG_col == 2041 | index_OG_col == 2503 | index_OG_col == 2625 ~ "AH001.0", #Asentamiento 1ro de Mayo
+                         
+                         index_OG_col == 1586 | index_OG_col == 1828 | index_OG_col == 2719 | index_OG_col == 2774 | index_OG_col == 2767 | index_OG_col == 2786 ~ "AH002.0", #Asentamiento Oasis de Villa General diferentes grupos y sectores
+                         
+                         index_OG_col == 391 | index_OG_col == 392 | index_OG_col == 877 | index_OG_col == 878 | index_OG_col == 869 | index_OG_col == 870 | index_OG_col == 445 | index_OG_col == 446 ~ "AH002.1", #Asentamiento Oasis de Villa Junta Directiva Central
+                         
+                         index_OG_col == 2707 | index_OG_col == 2714 | index_OG_col == 1561 | index_OG_col == 1844 | index_OG_col == 2692 | index_OG_col == 2800 ~ "OR002.0", #Asentamiento Oasis de Villa Asociaciones/Organización de Familias
+                         
+                         index_OG_col == 1414 | index_OG_col == 1661 ~ "AH003.0", #Asentamiento Lomas de Mamacona Junta Directiva
+                          
+                         index_OG_col == 2166 | index_OG_col == 2167 | index_OG_col == 2649 | index_OG_col == 2671 ~ "AH003.1", #Asentamiento Lomas de Mamacona diferentes grupos y sectores
+                         
+                         index_OG_col == 17 | index_OG_col == 18 | index_OG_col == 1841 | index_OG_col == 1842 ~ "AH004.0", #Asentamiento Laureles
+                         
+                         index_OG_col == 2150 | index_OG_col == 2151 ~ "AH005.0", #Asentamiento Jardines de Pachacamac
+                         
+                         index_OG_col == 2679 | index_OG_col == 21 | index_OG_col == 22 | index_OG_col == 1050 | index_OG_col == 1051 | index_OG_col == 2172 | index_OG_col == 2173 | index_OG_col == 2661 | index_OG_col == 2673 | index_OG_col == 39 | index_OG_col == 40 | index_OG_col == 1084 | index_OG_col == 1085 | index_OG_col == 2648 ~ "AH006.0", #Asentamiento Principe de Asturias diferentes grupos y sectores
+                         
+                         index_OG_col == 1550 | index_OG_col == 1840 ~ "AH006.1", #Asentamiento Principe de Asturias Junta Directiva
+                         
+                         index_OG_col == 1417 | index_OG_col == 1765 ~ "AH007.0", #Asentamiento Valle de Jesús
+                         
+                         index_OG_col == 2146 | index_OG_col == 2147 | index_OG_col == 3 | index_OG_col == 4 | index_OG_col == 1058 | index_OG_col == 1059 | index_OG_col == 2646 | index_OG_col == 2684 ~ "AH008.0", #Asentamiento Villa del Mar
+                
+                         index_OG_col == 1421 | index_OG_col == 1786 ~ "AH008.1", #Asentamiento Villa del Mar Junta Directiva
+                         
+                         index_OG_col == 328 | index_OG_col == 329 | index_OG_col == 1365 | index_OG_col == 1366  ~ "VL008.0", #Vaso de Leche Villa del Mar Comité
+                         
+                         index_OG_col == 1510 | index_OG_col == 1511 | index_OG_col == 2871 | index_OG_col == 2917 | index_OG_col == 2848 | index_OG_col == 2870  ~ "VL008.1", #Vaso de Leche Villa del Mar Vaso de Leche
+                         
+                         index_OG_col == 2308  ~ "OR008.0", #Comite de Org. de Obras Villa del Mar
+                         
+                         index_OG_col == 1428 | index_OG_col == 1654 ~ "OR008.1", #Asociación de Vivienda Villa del Mar
+                         
+                         index_OG_col == 2286 | index_OG_col == 2287 ~ "AP008.0", #Asociación de Propietarios de Villa del Mar
+                         
+                         index_OG_col == 2154 | index_OG_col == 2155 | index_OG_col == 1100 ~ "AH009.0", #Asentamiento Humano Virgen de la Candelaria
+                         
+                         index_OG_col == 2637 | index_OG_col == 2665 | index_OG_col == 27 | index_OG_col == 28 | index_OG_col == 1074 | index_OG_col == 1075 ~ "AH010.0", #Asentamiento Humano Virgen de la Candelaria
+                         
+                         
+                         
+    ))
 ```
 
 
