@@ -1,5 +1,5 @@
 ---
-title: "Base de datos - Merge"
+title: "Tesis - Data Preliminar (Sin 2023)"
 author: "Cesar Poggi"
 date: "2023-06-04"
 output: html_document
@@ -13,6 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(rio)
 library(tidyverse)
 library(dplyr)
+library(stringr)
+library(tidyselect)
 ```
 
 
@@ -137,13 +139,19 @@ PP_FULL$orgn_mod <- NA
 PP_FULL <- PP_FULL[,c(1,9,2:8)]
 ```
 
-Poner etiqueda a cada organización manualmente
+Poner etiqueda a cada organización manualmente [PAUSA MOMENTÁNEA]
 ```{r}
-#Para Asentamiento Humano poner AH antes del número que representa una unidad
-#Para Asociación de Propietarios AP antes del número que representa una unidad
-#Para Vaso de Leche VL antes del número que representa una unidad
-#Para Otro Tipo de Org. OR antes del número que representa una unidad
-
+#Para Asentamiento Humano poner [AH] antes del número que representa una unidad
+#Para Asociación de Propietarios [AP] antes del número que representa una unidad
+#Para Vaso de Leche [VL] antes del número que representa una unidad
+#Para Grupos sobre Medio Ambiente [MA] antes del número que representa esta unidad
+#Para Grupos sobre Discapacidad [HC] antes del número que representa esta unidad
+#Para Club de Madres [CM] antes del número que representa esta unidadantes de 
+#Para Otro Tipo de Org. [OR] antes del número que representa una unidad
+#Para Urbanizaciones [UB] antes del número que representa una unidad
+#Para Grupos de Familias y/o Vecinos [FV] antes del número que representa una unidad
+#Para Grupos Adulto Mayor [SR] antes del número que representa una unidad
+#Para grupos Agropecuarios [AG] antes del número que representa una unidad
 
 
 PP_FULL1 <- PP_FULL %>%
@@ -154,13 +162,13 @@ PP_FULL1 <- PP_FULL %>%
                          
                          index_OG_col == 391 | index_OG_col == 392 | index_OG_col == 877 | index_OG_col == 878 | index_OG_col == 869 | index_OG_col == 870 | index_OG_col == 445 | index_OG_col == 446 ~ "AH002.1", #Asentamiento Oasis de Villa Junta Directiva Central
                          
-                         index_OG_col == 2707 | index_OG_col == 2714 | index_OG_col == 1561 | index_OG_col == 1844 | index_OG_col == 2692 | index_OG_col == 2800 ~ "OR002.0", #Asentamiento Oasis de Villa Asociaciones/Organización de Familias
+                         index_OG_col == 2707 | index_OG_col == 2714 | index_OG_col == 1561 | index_OG_col == 1844 | index_OG_col == 2692 | index_OG_col == 2800 ~ "FV002.0", #Asentamiento Oasis de Villa Asociaciones/Organización de Familias
                          
                          index_OG_col == 1414 | index_OG_col == 1661 ~ "AH003.0", #Asentamiento Lomas de Mamacona Junta Directiva
                           
                          index_OG_col == 2166 | index_OG_col == 2167 | index_OG_col == 2649 | index_OG_col == 2671 ~ "AH003.1", #Asentamiento Lomas de Mamacona diferentes grupos y sectores
                          
-                         index_OG_col == 17 | index_OG_col == 18 | index_OG_col == 1841 | index_OG_col == 1842 ~ "AH004.0", #Asentamiento Laureles
+                         index_OG_col == 17 | index_OG_col == 18 | index_OG_col == 1841 | index_OG_col == 1842 | index_OG_col == 1036 | index_OG_col == 1037 ~ "AH004.0", #Asentamiento Laureles
                          
                          index_OG_col == 2150 | index_OG_col == 2151 ~ "AH005.0", #Asentamiento Jardines de Pachacamac
                          
@@ -200,27 +208,168 @@ PP_FULL1 <- PP_FULL %>%
                          
                          index_OG_col == 7 | index_OG_col == 8 | index_OG_col == 1068 | index_OG_col == 1069 | index_OG_col == 19 | index_OG_col == 20 | index_OG_col == 1029 | index_OG_col == 1030 | index_OG_col == 2630 | index_OG_col == 2652 ~ "AH014.0", #Asentamiento Humano Amp. Max Uhle
                          
-                         index_OG_col == 2334 | index_OG_col == 2416 ~ "CP014.0", #Asentamiento Humano Amp. Max Uhle
+                         index_OG_col == 2334 | index_OG_col == 2416 ~ "CP014.0", #Comedor Popular del Asentamiento Humano Amp. Max Uhle
+                         
+                         index_OG_col == 9 | index_OG_col == 10 | index_OG_col == 2722 | index_OG_col == 2751 ~ "AH015.0", #Asentamiento Humano Edilberto Ramos
+                         
+                         index_OG_col == 389 | index_OG_col == 390 | index_OG_col == 885 | index_OG_col == 887 | index_OG_col == 889 | index_OG_col == 890 | index_OG_col == 891 | index_OG_col == 880 | index_OG_col == 881 | index_OG_col == 489 | index_OG_col == 490 | index_OG_col == 882 | index_OG_col == 884 ~ "AH015.1", #Junta Directiva del Asentamiento Humano Amp. Max Uhle
+                         
+                         index_OG_col == 867 | index_OG_col == 868 ~ "MA015.1", #Comité Medio Ambiente JD Edilberto Ramos
+                         
+                         index_OG_col == 11 | index_OG_col == 12 | index_OG_col == 1062 | index_OG_col == 1063 | index_OG_col == 1411 | index_OG_col == 1412 | index_OG_col == 2627 | index_OG_col == 2676 ~ "AH016.0", #Asentamiento Heroes del Cenepa
+                         
+                         index_OG_col == 2174 | index_OG_col == 2175 ~ "AH016.1", #Junta Directiva Heroes del Cenepa
+                         
+                         index_OG_col == 2178 | index_OG_col == 2179 | index_OG_col == 2653 | index_OG_col == 2677 ~ "CP016.0", #Comedor Popular Heroes del Cenepa
+                         
+                         index_OG_col == 13 | index_OG_col == 14 | index_OG_col == 1990 | index_OG_col == 1991 | index_OG_col == 1215 | index_OG_col == 1217 | index_OG_col == 1171 | index_OG_col == 1173 | index_OG_col == 2392 | index_OG_col == 2451  ~ "FV017.0", #Asentamiento Humano Hijos de Villa/Asociación de Familias
+                         
+                         index_OG_col == 1581 | index_OG_col == 1862 ~ "AH017.1", #Junta Directiva Asentamiento Humano Hijos de Villa
+                         
+                         index_OG_col == 1208 | index_OG_col == 1211 | index_OG_col == 1224 | index_OG_col == 1227 | index_OG_col == 1969 | index_OG_col == 1970 | index_OG_col == 2716 | index_OG_col == 2717 | index_OG_col == 2346 | index_OG_col == 2386  ~ "CM017.0", #Club de Madres Virgen de las Mercedes - Asentamiento Humano Hijos de Villa
                          
                          
+                         index_OG_col == 1455 | index_OG_col == 1681 | index_OG_col == 1965 | index_OG_col == 1966 ~ "AH018.0", #Asentamiento Humano Las Praderas de Villa
                          
-    ))
-```
+                         index_OG_col == 1229 | index_OG_col == 1230 | index_OG_col == 447 | index_OG_col == 448 ~ "AH018.1", #Asentamiento Humano Las Praderas de Villa Junta Directiva
+                         
+                         index_OG_col == 23 | index_OG_col == 24 | index_OG_col == 1060 | index_OG_col == 1061 ~ "AH019.0", #Asentamiento Humano Señor de los Milagros
+                         
+                         index_OG_col == 2638 | index_OG_col == 2643 ~ "AH020.0", #Asentamiento Humano Victor CHero Ramos
+                         
+                         index_OG_col == 1471 | index_OG_col == 1552 ~ "AH020.1", #Seguridad Ciudadana Asentamiento Humano Victor Chero Ramos
+                         
+                         index_OG_col == 25 | index_OG_col == 26 | index_OG_col == 1086 | index_OG_col == 1087 ~ "VL020.0", #Vaso de Leche Asentamiento Humano Victor Chero Ramos
+                         
+                         index_OG_col == 1759 | index_OG_col == 2156 | index_OG_col == 2157 | index_OG_col == 2644 | index_OG_col == 2672 | index_OG_col == 1555 | index_OG_col == 1766  ~ "UB021.0", #Urb. Pachacamac - Centrales
+                         
+                         index_OG_col == 2655 | index_OG_col == 2662 | index_OG_col == 2140 | index_OG_col == 2141 ~ "UB021.1", #Urb. Pachacamac - Junta Directiva
+                         
+                         index_OG_col == 2651 | index_OG_col == 2663 ~ "HC021.0", #Urb. Pachacamac - Grupo de Personas con discapacidad
+                         
+                         index_OG_col == 73 | index_OG_col == 72 | index_OG_col == 1056 | index_OG_col == 1057 | index_OG_col == 664 | index_OG_col == 1057 | index_OG_col == 2148 ~ "AP021.0", #Urb. Pachacamac - Asociación de propietarios
+                         
+                         index_OG_col == 1031 | index_OG_col == 1032 | index_OG_col == 2148 | index_OG_col == 2149 ~ "AP021.1", #Urb. Pachacamac - Asociacion de Adjudicatarios COnjunto Habitacional Sextor 1 Barrio 2
+                         
+                         index_OG_col == 663 | index_OG_col == 1763 | index_OG_col == 1764 | index_OG_col == 1090 | index_OG_col == 82 | index_OG_col == 83 ~ "AP021.2", #Adjudicatarios agrupamiento Residencial
+                         
+                         index_OG_col == 2170 | index_OG_col == 2171 | index_OG_col == 1762 | index_OG_col == 1882 | index_OG_col == 1021 | index_OG_col == 1022 | index_OG_col == 609 | index_OG_col == 610 ~ "OR021.0", #Urb. Pachacamac - Comites Integales
+                         
+                         index_OG_col == 2629 | index_OG_col == 2658 ~ "OR021.1", #Urb. Pachacamac - Comite de Obras
+                         
+                         index_OG_col == 2181 | index_OG_col == 2182 ~ "FV021.0", #Urb. Pachacamac - Comite Vecinal
+                         
+                         index_OG_col == 2626 | index_OG_col == 2632 ~ "FV021.1", #Urb. Pachacamac - Comite Vecinal
+                         
+                         index_OG_col == 1413 | index_OG_col == 1545 ~ "OR021.2", #Urb. Pachacamac - Conjunto Habitacional 8 de Febrero
+                         
+                         index_OG_col == 2138 | index_OG_col == 2139 ~ "OR021.3", #Urb. Pachacamac - Conjunto Habitacional 8 de Febrero
+                         
+                         index_OG_col == 90 | index_OG_col == 91 | index_OG_col == 1040 | index_OG_col == 1041 ~ "OR021.4", #Urb. Pachacamac - Asociacion de Trabajo de Construcción Civil
+                         
+                         index_OG_col == 2639 | index_OG_col == 2660 ~ "MA021.0", #Urb. Pachacamac - Comite de Medio Ambiente y Obras
+                         
+                         index_OG_col == 2633 | index_OG_col == 2685 ~ "CM021.0", #Urb. Pachacamac - Club de Madres Santa Ana
+                         
+                         index_OG_col == 2634 | index_OG_col == 2683 ~ "AH021.0", #Urb. Pachacamac - Asentamiento Humano
+                         
+                         index_OG_col == 2747 | index_OG_col == 2763 ~ "AH022.0", #Asentamiento Humano Mirador de Villa 200 Millas
+                         
+                         index_OG_col == 2704 | index_OG_col == 2802 | index_OG_col == 2733 | index_OG_col == 2818 ~ "AH023.0", #Asentamiento Humano San Ignacio de Loyola - Lomo de Corvina
+                         
+                         index_OG_col == 2856 | index_OG_col == 2875 | index_OG_col == 1313 | index_OG_col == 1314 ~ "AG023.0", #Asociacion Agropecuaria AGROSILVES (San Isidro Labrador) - Lomo de Corvina
+                         
+                         index_OG_col == 1480 | index_OG_col == 1481 | index_OG_col == 2230 | index_OG_col == 2231 | index_OG_col == 1329 | index_OG_col == 1382 ~ "FV023.0", #Juntas Vecinales AGROSILVES - Lomo de Corvina
+                         
+                         index_OG_col == 2865 | index_OG_col == 2904 ~ "OR023.0", #Comite de obra pro servicios AGROSILVES - Lomo de Corvina
+                         
+                         index_OG_col == 2248 | index_OG_col == 2249 | index_OG_col == 1426 | index_OG_col == 1427 ~ "OR023.1", #Comite Obras Asociaciones de Vivienda - Lomo de Corvina
+                         
+                         index_OG_col == 1373 | index_OG_col == 1374 ~ "OR023.2", #Comite Gestión Agua y Alcantarillado Perccanacuy - Lomo de Corvina
+                         
+                         index_OG_col == 1328 | index_OG_col == 143 | index_OG_col == 144 | index_OG_col == 1327 ~ "OR023.3", #Central de Instituciones AGROSILVES
+                         
+                         index_OG_col == 2843 | index_OG_col == 2857 ~ "AP023.0", #Asociación de Posecionarios (Propietarios) de AGROSILVES
+                         
+                         index_OG_col == 64 | index_OG_col == 65 ~ "AG023.1", #Asociacion Agropecuaria Tres Regiones - Lomo de Corvina
+                         
+                         index_OG_col == 1807 | index_OG_col == 1808 | index_OG_col == 2290 | index_OG_col == 2291 | index_OG_col == 2879 | index_OG_col == 2913 | index_OG_col == 108 | index_OG_col == 109 | index_OG_col == 1320 | index_OG_col == 1321 ~ "AG023.2", #Asociacion Chacrita Cajamarquina - Lomo de Corvina
+                         
+                         index_OG_col == 2877 | index_OG_col == 2907 | index_OG_col == 62 | index_OG_col == 63 | index_OG_col == 1326 | index_OG_col == 2234 | index_OG_col == 2235 ~ "AG023.3", #Asociacion Agropecuaria Las Lomas - Lomo de Corvina
+                         
+                         index_OG_col == 2925 | index_OG_col == 2926 ~ "AG023.4", #Asociacion Agropecuaria Tres de Mayo - Lomo de Corvina
+                         
+                         index_OG_col == 2831 | index_OG_col == 2896 | index_OG_col == 409 | index_OG_col == 410 | index_OG_col == 1212 | index_OG_col == 1213 ~ "AG023.5", #Asociacion Agropecuaria Juan Velazco Alvarado - Lomo de Corvina
+                         
+                         index_OG_col == 1716 | index_OG_col == 1877 | index_OG_col == 2044 | index_OG_col == 2045 | index_OG_col == 2463 | index_OG_col == 2549 ~ "MA023.5", #Comité Ambiental Asociacion Agropecuaria Juan Velazco Alvarado - Lomo de Corvina
+                         
+                         index_OG_col == 687 | index_OG_col == 688 | index_OG_col == 188 | index_OG_col == 189 | index_OG_col == 1610 | index_OG_col == 1747 | index_OG_col == 2506 | index_OG_col == 2552 | index_OG_col == 2337 | index_OG_col == 2394 ~ "SR023.5", #Club Adulto Mayor Juan Velazco Alvarado - Lomo de Corvina
+                         
+                         index_OG_col == 1483 | index_OG_col == 1803 | index_OG_col == 1322 | index_OG_col == 1323 | index_OG_col == 449 | index_OG_col == 450 | index_OG_col == 1503 | index_OG_col == 1543 ~ "AG023.5.1", #Asociacion Agropecuaria Juan Velazco Alvarado/Junta directiva - Lomo de Corvina
+                         
+                         index_OG_col == 135 | index_OG_col == 136 ~ "AG023.6", #Asociacion Agropecuaria Und. - Lomo de Corvina
+                         
+                         index_OG_col == 1153 | index_OG_col == 1156 ~ "AH024.0", #Asentamiento Humano Villa Victoria
+                         
+                         index_OG_col == 29 | index_OG_col == 30 | index_OG_col == 1139 | index_OG_col == 1140 | index_OG_col == 1988 | index_OG_col == 1989 ~ "SR025.0", #Club Adulto Mayor Semilla de Santa Rosa
+                         
+                         index_OG_col == 31 | index_OG_col == 32 | index_OG_col == 671 | index_OG_col == 672 | index_OG_col == 2100 | index_OG_col == 2101 | index_OG_col == 1734 | index_OG_col == 1838 | index_OG_col == 2486 | index_OG_col == 2491 ~ "SR026.0", #Club Adulto Mayor Guillermo Burneo
+                         
+                         index_OG_col == 1048 | index_OG_col == 1049 | index_OG_col == 37 | index_OG_col == 38 | index_OG_col == 33 | index_OG_col == 34 | index_OG_col == 1017 | index_OG_col == 1018 | index_OG_col == 2144 | index_OG_col == 2145 | index_OG_col == 2669 | index_OG_col == 2682 ~ "UR027.0", #Ampliación Aires de Pachacamac
+                         
+                         index_OG_col == 1407 | index_OG_col == 1408 ~ "VL027.0", #Vaso de Leche Ampliación Aires de Pachacamac
+                         
+                         index_OG_col == 35 | index_OG_col == 36 | index_OG_col == 1297 | index_OG_col == 1298 | index_OG_col == 2254 | index_OG_col == 2255 | index_OG_col == 1621 | index_OG_col == 1809 | index_OG_col == 1433 | index_OG_col == 1647 ~ "FV028.0", #Agrupación Familiar Fundadores Wasiwasi
+                        
+                         ))
 
+```
 
 Poner etiqueta a los tipos de organizaciones según la identificación de palabras clave (Ejem: "vaso de leche", "comedor popular", "agropecuario", etc.)
 ```{r}
+#Para Asentamiento Humano poner [AH] antes del número que representa una unidad
+#Para Asociación de Propietarios [AP] antes del número que representa una unidad
+#Para Vaso de Leche [VL] antes del número que representa una unidad
+#Para Grupos sobre Medio Ambiente [MA] antes del número que representa esta unidad
+#Para Grupos sobre Discapacidad [HC] antes del número que representa esta unidad
+#Para Club de Madres [CM] antes del número que representa esta unidadantes de 
+#Para Otro Tipo de Org. [OR] antes del número que representa una unidad
+#Para Urbanizaciones [UB] antes del número que representa una unidad
+#Para Grupos de Familias y/o Vecinos [FV] antes del número que representa una unidad
+#Para Grupos Adulto Mayor [SR] antes del número que representa una unidad
+#Para grupos Agropecuarios [AG] antes del número que representa una unidad
 
+PP_FULL2 <- PP_FULL %>%
+  mutate(tipo_orgn_mod =
+           case_when(
+             str_detect(orgn, "URBANIZACION") | str_detect(orgn, "URB.") | str_detect(orgn, "SECTOR&GRUPO") ~ 'UR',
+             str_detect(orgn, "ASENTAMIENTO") ~ 'AH',
+             str_detect(orgn, "AGR. ") | str_detect(orgn, "AGROPECUARIO") | str_detect(orgn, "AGROPECUARIA") ~ 'AG',
+             str_detect(orgn, "VASO ") ~ 'VL', 
+             str_detect(orgn, "PROPIETARIOS") | str_detect(orgn, "ADJUDICATARIOS")| str_detect(orgn, "POSECIONARIOS") ~ 'AP',
+             str_detect(orgn, "FAMILIAS") | str_detect(orgn, "FAMILIAR") | str_detect(orgn, "VECINOS") | str_detect(orgn, "VECINA") ~ 'FV',
+             str_detect(orgn, "AMBIENTE") | str_detect(orgn, "AREAS&VERDES") ~ 'MA',
+             str_detect(orgn, "CLUB DE MADRES") ~ 'CM',
+             str_detect(orgn, "COMEDOR") ~ 'CP',
+             str_detect(orgn, "ADULTO MAYOR") ~ 'SR',
+             str_detect(orgn, "DISCAPACIDAD") ~ 'HC'
+             ),
+         
+         tipo_orgn_mod =
+           case_when(
+             str_detect(orgn, "AMBIENTE") | str_detect(orgn, "AREAS&VERDES") ~ 'MA'))
 ```
 
 Subset de variables: organizaciones y variables de año / tipo de organización y variables de año
 ```{r}
-
+PP_SUBSET2 <- PP_FULL2[,c(10,4:8)]
+distinct(PP_SUBSET2, tipo_orgn_mod, AÑO2015, AÑO2016, .keep_all = TRUE)
 ```
 
 Juntar filas según etiqueta de organizaciones / tipo de organizaciones
 ```{r}
-
+PP_SUBSET2[,c(2:6)] <- sapply(PP_SUBSET2[c(2:6)],as.numeric)
+Resumen_Tipo_Org<- aggregate(. ~ tipo_orgn_mod, data = PP_SUBSET2, sum)
 ```
 
 Creación de nueva columna de suma de variables dicotómicas de año
