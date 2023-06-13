@@ -374,14 +374,12 @@ PP_FULL1 <- PP_FULL %>%
                          
                          index_OG_col == 987 | index_OG_col == 988 ~ "AH030.16.1", #Sector 3 Grupo 29 - Asentamiento Humano 1ro de Mayo - Junta Directiva central
                          
+                         index_OG_col == 2517 | index_OG_col == 2525 ~ "UR030.16", #Sector 3 Grupo 31 - Ampliación del grupo
+                         
                          index_OG_col == 993 | index_OG_col == 994 ~ "OR030.16", #Sector 3 Grupo 31 - Asentamiento Humano 1ro de Mayo - Asociacion de Impedidos Nueva Era
                          
                          
-                         
-                         
-                         
-                         
-                         
+        
                          ))
 
 ```
