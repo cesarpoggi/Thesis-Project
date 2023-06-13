@@ -186,7 +186,21 @@ PP_FULL1 <- PP_FULL %>%
                          
                          index_OG_col == 2154 | index_OG_col == 2155 | index_OG_col == 1100 ~ "AH009.0", #Asentamiento Humano Virgen de la Candelaria
                          
-                         index_OG_col == 2637 | index_OG_col == 2665 | index_OG_col == 27 | index_OG_col == 28 | index_OG_col == 1074 | index_OG_col == 1075 ~ "AH010.0", #Asentamiento Humano Virgen de la Candelaria
+                         index_OG_col == 2637 | index_OG_col == 2665 | index_OG_col == 27 | index_OG_col == 28 | index_OG_col == 1074 | index_OG_col == 1075 ~ "AH010.0", #Asentamiento Humano Villa Union
+                         
+                         index_OG_col == 1 | index_OG_col == 2 | index_OG_col == 1299 | index_OG_col == 1300 | index_OG_col == 2298 | index_OG_col == 2299 ~ "OR011.0", #Asociación de pobladores el Buen Samaritano
+                         
+                         index_OG_col == 5 | index_OG_col == 6 ~ "AH012.0", #Asentamiento Humano 11 de Dic
+                         
+                         index_OG_col == 858 | index_OG_col == 859 ~ "AH012.1", #Junta Directiva del Asentamiento Humano 11 de Dic
+                         
+                         index_OG_col == 1064 | index_OG_col == 1065 | index_OG_col == 15 | index_OG_col == 16 ~ "AH013.0", #Asentamiento Humano Brisas de Pachacamac
+                         
+                         index_OG_col == 2161 ~ "AH013.1", #Comité de Gestión de Obras Asentamiento Humano Brisas de Pachacamac
+                         
+                         index_OG_col == 7 | index_OG_col == 8 | index_OG_col == 1068 | index_OG_col == 1069 | index_OG_col == 19 | index_OG_col == 20 | index_OG_col == 1029 | index_OG_col == 1030 | index_OG_col == 2630 | index_OG_col == 2652 ~ "AH014.0", #Asentamiento Humano Amp. Max Uhle
+                         
+                         index_OG_col == 2334 | index_OG_col == 2416 ~ "CP014.0", #Asentamiento Humano Amp. Max Uhle
                          
                          
                          
