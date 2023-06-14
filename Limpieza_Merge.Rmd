@@ -152,6 +152,7 @@ Poner etiqueda a cada organización manualmente [PAUSA MOMENTÁNEA]
 #Para Grupos de Familias y/o Vecinos [FV] antes del número que representa una unidad
 #Para Grupos Adulto Mayor [SR] antes del número que representa una unidad
 #Para grupos Agropecuarios [AG] antes del número que representa una unidad
+#Para grupos Empresarios [EP] antes del número que representa una unidad
 
 
 PP_FULL1 <- PP_FULL %>%
@@ -374,9 +375,37 @@ PP_FULL1 <- PP_FULL %>%
                          
                          index_OG_col == 987 | index_OG_col == 988 ~ "AH030.16.1", #Sector 3 Grupo 29 - Asentamiento Humano 1ro de Mayo - Junta Directiva central
                          
-                         index_OG_col == 2517 | index_OG_col == 2525 ~ "UR030.16", #Sector 3 Grupo 31 - Ampliación del grupo
+                         index_OG_col == 2517 | index_OG_col == 2525 | index_OG_col == 41 | index_OG_col == 42 ~ "UR030.16", #Sector 3 Grupo 31 - Ampliación del grupo
                          
                          index_OG_col == 993 | index_OG_col == 994 ~ "OR030.16", #Sector 3 Grupo 31 - Asentamiento Humano 1ro de Mayo - Asociacion de Impedidos Nueva Era
+                         
+                         index_OG_col == 693 | index_OG_col == 694 | index_OG_col == 2067 | index_OG_col == 2068 ~ "EP031.0", #Asociación de (Micro)Empresarios Villa 2000
+                         
+                         index_OG_col == 45 | index_OG_col == 46 | index_OG_col == 1196 | index_OG_col == 1197 ~ "OR032.0", #APAFA IE 7072
+                         
+                         index_OG_col == 1163 | index_OG_col == 1169 ~ "OR032.0", #APAFA IE 7072
+                         index_OG_col == 493 | index_OG_col == 494 | index_OG_col == 1001 | index_OG_col == 1002 | index_OG_col == 1005 ~ "UR033.0.1", #Sector 1 grupo 1 - Junta Directiva
+                         
+                         index_OG_col == 2380 | index_OG_col == 2438 ~ "SR034.0", #Sector 1 grupo 7 - Club Adulto Mayor Fundadores
+                         
+                         index_OG_col == 2355 | index_OG_col == 2367 ~ "UR034.0.1", #Sector 1 grupo 7 - Junta Directiva
+                         
+                         index_OG_col == 1941 | index_OG_col == 1942 | index_OG_col == 758 | index_OG_col == 2393 | index_OG_col == 2432 | index_OG_col == 593 | index_OG_col == 594 | index_OG_col == 1155 | index_OG_col == 1157 | index_OG_col == 1695 | index_OG_col == 1830 ~ "CM034.0", #Sector 1 grupo 7 - Club de Madres Virgen de Fatima 2
+                         
+                         index_OG_col == 1695 | index_OG_col == 1830 ~ "CM034.0", #Sector 1 grupo 7 - Club de Madres Virgen de Fatima 2
+                         
+                         index_OG_col == 1160 | index_OG_col == 1161 ~ "UR035.0.1", #Sector 1 grupo 9 - Junta Directiva
+                         
+                         index_OG_col == 1936 | index_OG_col == 1938 ~ "UR035.0", #Sector 1 grupo 10
+                         
+                         index_OG_col == 1818 | index_OG_col == 1861 ~ "UR035.0.1", #Sector 1 grupo 10 - Junta Directiva
+                         
+                         index_OG_col == 1936 | index_OG_col == 1938 ~ "UR035.0", #Sector 1 grupo 10
+                         
+                         index_OG_col == 501 | index_OG_col == 502 | index_OG_col == 660  ~ "UR036.0.1", #Sector 1 grupo 11 - Junta Directiva
+                         
+                         index_OG_col == 2406 | index_OG_col == 2381  ~ "CM037.0", #Sector 1 grupo 12 - Club de Madres Nuestro Porvenir
+                         
                          
                          
         
@@ -397,6 +426,7 @@ Poner etiqueta a los tipos de organizaciones según la identificación de palabr
 #Para Grupos de Familias y/o Vecinos [FV] antes del número que representa una unidad
 #Para Grupos Adulto Mayor [SR] antes del número que representa una unidad
 #Para grupos Agropecuarios [AG] antes del número que representa una unidad
+#Para grupos Empresarios [AG] antes del número que representa una unidad
 
 PP_FULL1 <- PP_FULL1 %>%
   mutate(tipo_orgn_mod =
