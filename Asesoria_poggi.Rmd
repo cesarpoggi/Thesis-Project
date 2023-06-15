@@ -18,7 +18,7 @@ prueba_bd=import(prueba_html, encoding = 'UTF-8')
 ```{r}
 #Lista de palabras según prioridades
 
-reference_importance <- c("DISCAPACIDAD", "ADULTO MAYOR", "COMEDOR","CLUB DE MADRES", "AMBIENTE", "AREAS&VERDES", "FAMILIAS", "FAMILIAR", "VECINOS", "VECINA", "PROPIETARIOS", "ADJUDICATARIOS", "POSECIONARIOS", "VASO","AGR.", "AGROPECUARIO", "AGROPECUARIA", "ASENTAMIENTO", "URBANIZACION", "URB.", "SECTOR&GRUPO") #cambiar a palabras juntas
+reference_importance <- c("DISCAPACIDAD", "ADULTO MAYOR", "COMEDOR","MADRES", "AMBIENTE", "AREAS&VERDES", "FAMILIAS", "FAMILIAR", "VECINOS", "VECINA", "PROPIETARIOS", "ADJUDICATARIOS", "POSECIONARIOS", "VASO","AGR.", "AGROPECUARIO", "AGROPECUARIA", "ASENTAMIENTO", "URBANIZACION", "URB.", "SECTOR&GRUPO") #cambiar a palabras juntas
 
 library(tidyr)
 library(dplyr)
