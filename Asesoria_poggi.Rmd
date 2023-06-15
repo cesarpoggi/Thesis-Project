@@ -1,0 +1,66 @@
+---
+title: "Asesoria_Poggi"
+author: "Maria Pia van Oordt"
+date: "2023-06-14"
+output: html_document
+---
+
+```{r}
+library(rio)
+library(dplyr)
+library(stringr)
+library(tidyselect)
+
+prueba_html <- "https://www.dropbox.com/s/lw15n5kex4m66qy/PRUEBA.csv?dl=1"
+prueba_bd=import(prueba_html, encoding = 'UTF-8')
+```
+
+```{r}
+#Lista de palabras según prioridades
+
+reference_importance <- c("DISCAPACIDAD", "ADULTO MAYOR", "COMEDOR","CLUB DE MADRES", "AMBIENTE", "AREAS&VERDES", "FAMILIAS", "FAMILIAR", "VECINOS", "VECINA", "PROPIETARIOS", "ADJUDICATARIOS", "POSECIONARIOS", "VASO","AGR.", "AGROPECUARIO", "AGROPECUARIA", "ASENTAMIENTO", "URBANIZACION", "URB.", "SECTOR&GRUPO") #cambiar a palabras juntas
+
+library(tidyr)
+library(dplyr)
+library(tibble)
+
+#Para ver cuantas organizaciones hay en total
+#prueba_bd_v3 <- prueba_bd %>% 
+#  group_by(orgn) %>% count() %>% select(-n) 
+
+pr <- prueba_bd %>%
+    rowid_to_column() %>%
+    separate_rows(orgn, sep = " ")%>%
+    group_by(rowid) %>%
+    slice_min(match(orgn, reference_importance)) %>%
+  
+  rename(tipo_orgn_nom = orgn) %>%
+  select(tipo_orgn_nom,rowid)
+  
+prueba_bd <- prueba_bd %>% 
+  rowid_to_column() %>% 
+  left_join(pr,by ="rowid")
+
+prueba_bd_v2 <- prueba_bd %>%
+  mutate(tipo_orgn_mod =
+           case_when(
+             str_detect(tipo_orgn_nom, "URBANIZACION") | str_detect(tipo_orgn_nom, "URB.") | str_detect(tipo_orgn_nom, "SECTOR&GRUPO") ~ 'UR',
+             str_detect(tipo_orgn_nom, "ASENTAMIENTO") | str_detect(tipo_orgn_nom, "A.H") | str_detect(tipo_orgn_nom, "A.H.") | str_detect(tipo_orgn_nom, "AA.HH.") ~ 'AH',
+             str_detect(tipo_orgn_nom, "AGR. ") | str_detect(tipo_orgn_nom, "AGROPECUARIO") | str_detect(tipo_orgn_nom, "AGROPECUARIA") ~ 'AG',
+             str_detect(tipo_orgn_nom, "VASO ") ~ 'VL', 
+             str_detect(tipo_orgn_nom, "PROPIETARIOS") | str_detect(tipo_orgn_nom, "ADJUDICATARIOS")| str_detect(tipo_orgn_nom, "POSECIONARIOS") ~ 'AP',
+             str_detect(tipo_orgn_nom, "FAMILIAS") | str_detect(tipo_orgn_nom, "FAMILIAR") | str_detect(tipo_orgn_nom, "VECINOS") | str_detect(tipo_orgn_nom, "VECINA") ~ 'FV',
+             str_detect(tipo_orgn_nom, "AMBIENTE") | str_detect(tipo_orgn_nom, "AREAS&VERDES") ~ 'MA',
+             str_detect(tipo_orgn_nom, "CLUB DE MADRES") ~ 'CM',
+             str_detect(tipo_orgn_nom, "COMEDOR") ~ 'CP',
+             str_detect(tipo_orgn_nom, "ADULTO MAYOR") ~ 'SR',
+             str_detect(tipo_orgn_nom, "DISCAPACIDAD") ~ 'HC',
+             TRUE ~ 'OR'
+           ))
+
+
+distinct(prueba_bd_v2, tipo_orgn_mod, AÑO2015, AÑO2016, .keep_all = TRUE)
+#Quedarme con filas con columans diferentes en rowid, tipo de org, y los años
+#???
+```
+
