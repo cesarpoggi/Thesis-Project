@@ -450,7 +450,7 @@ PP_FULL1 <- PP_FULL1[,c(1:3,10,4:9)]
 Subset de variables: organizaciones y variables de año / tipo de organización y variables de año
 ```{r}
 PP_SUBSET <- PP_FULL1[,c(4,5:9)]
-#distinct(PP_SUBSET, tipo_orgn_mod, AÑO2015, AÑO2016, .keep_all = TRUE)
+distinct(PP_SUBSET, tipo_orgn_mod, AÑO2015, AÑO2016, .keep_all = TRUE)
 ```
 
 Juntar filas según etiqueta de organizaciones / tipo de organizaciones en aggregate
