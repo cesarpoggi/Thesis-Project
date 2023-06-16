@@ -409,23 +409,36 @@ PP_FULL1 <- PP_FULL %>%
 Vector de prioridades para palabras clave
 ```{r}
 reference_importance <- c("DISCAPACIDAD", 
+                          "CULTURAL",
                           "ADULTO", 
                           "COMEDOR",
-                          "MADRES", 
+                          "MADRES",
+                          "EDUCAION",
                           "AMBIENTE", 
                           "AREAS&VERDES", 
                           "FAMILIAS", 
                           "FAMILIAR", 
-                          "VECINOS", 
+                          "VECINOS",
+                          "POBLADORES",
                           "VECINA", 
                           "PROPIETARIOS", 
-                          "ADJUDICATARIOS", 
+                          "ADJUDICATARIOS",
+                          "ADJ",
                           "POSECIONARIOS", 
                           "VASO",
+                          "SEGURIDAD",
+                          "CETPRO",
+                          "COMITE",
+                          "BRIGADA",
                           "AGR", 
                           "AGROPECUARIO", 
                           "AGROPECUARIA",
+                          "AGROP",
+                          "AGROSILVES",
+                          "AGROPAGROSILVES",
                           "COORDINAROA",
+                          "EMPRESARIOS",
+                          "MICROEMPRESARIOS",
                           "AAHH",
                           "AH",
                           "ASENTAMIENTO", 
@@ -434,7 +447,22 @@ reference_importance <- c("DISCAPACIDAD",
                           "ST",
                           "SECTOR",
                           "GR",
-                          "GRUPO")
+                          "GRUPO",
+                          "COORDINADORA",
+                          "ASOC",
+                          "ASOCDE",
+                          "ASOCTRABJ",
+                          "ASOCTRABAJADORES",
+                          "ASOC.VIV",
+                          "ASOCVIVIENDA",
+                          "VIVIENDA",
+                          "ASOCIACIAN",
+                          "ASOCIACION",
+                          "BENDICIAN",
+                          "ASSOCIACION",
+                          "ASPROREP",
+                          "COMERCIAL",
+                          "CENTRO")
 ```
 
 Deconstrucción de filas para separar palabras, identificar las palabras claves y quedarnos con las más relevantes
@@ -452,7 +480,7 @@ n_occur_FULL1 <- data.frame(table(PP_FULL1$rowid)) #casos con doble repetición 
 
 
 ```{r}
-PP_FULL <- PP_FULL %>% 
+PP_FULL2 <- PP_FULL %>% 
   rowid_to_column() %>% 
   left_join(PP_FULL1,by ="rowid")
 ```
@@ -472,7 +500,7 @@ Poner etiqueta a los tipos de organizaciones según la identificación de palabr
 #Para grupos Agropecuarios [AG] antes del número que representa una unidad
 #Para grupos Empresarios [AG] antes del número que representa una unidad
 
-PP_FULL2 <- PP_FULL %>%
+PP_FULL3 <- PP_FULL2 %>%
   mutate(tipo_orgn_mod =
            case_when(
              str_detect(tipo_orgn_nom, "URBANIZACION") | str_detect(tipo_orgn_nom, "URB.") | str_detect(tipo_orgn_nom, "SECTOR&GRUPO") ~ 'UR',
