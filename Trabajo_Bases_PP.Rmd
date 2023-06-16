@@ -15,6 +15,8 @@ library(tidyverse)
 library(dplyr)
 library(stringr)
 library(tidyselect)
+library(tidyr)
+library(tibble)
 ```
 
 
@@ -40,25 +42,16 @@ PP2020_pag=import(PP2020_pag_html, encoding = 'UTF-8')
 
 Quedarnos con variables elementales
 ```{r}
-#list_dfs <- dplyr::lst(PP2015_pag, PP2016_pag, PP2017_pag, PP2018_pag, PP2020_pag)
-
-#list_dfs <- lapply(list_dfs, function(x) x[names(x) == c("tipo_orgn", "orgn")])
-#list2env(list_dfs, .GlobalEnv)
-
 #list_dfs2 <- lapply(list_dfs, subset, select = c("orgn", "tipo_orgn"))
 #list2env(list_dfs2, .GlobalEnv)
 
-PP2015_pag <- select(PP2015_pag, c("orgn", "tipo_orgn"))
-PP2016_pag <- select(PP2016_pag, c("orgn", "tipo_orgn"))
-PP2017_pag <- select(PP2017_pag, c("orgn", "tipo_orgn"))
-PP2018_pag <- select(PP2018_pag, c("orgn", "tipo_orgn"))
+PP2015_pag <- select(PP2015_pag, c("orgn"))
+PP2016_pag <- select(PP2016_pag, c("orgn"))
+PP2017_pag <- select(PP2017_pag, c("orgn"))
+PP2018_pag <- select(PP2018_pag, c("orgn"))
 PP2020_pag <- select(PP2020_pag, c("orgn"))
 ```
 
-Editar variables requeridas
-```{r}
-#Por ahora solo nombre pero no se utilizará
-```
 
 Añadir variables dicotómicas de año (desde 2015 al 2020) a cada base 
 ```{r}
@@ -107,11 +100,6 @@ PP2016_pag$orgn <- iconv(PP2016_pag$orgn, to='ASCII//TRANSLIT')
 PP2017_pag$orgn <- iconv(PP2017_pag$orgn, to='ASCII//TRANSLIT')
 PP2018_pag$orgn <- iconv(PP2018_pag$orgn, to='ASCII//TRANSLIT')
 PP2020_pag$orgn <- iconv(PP2020_pag$orgn, to='ASCII//TRANSLIT')
-
-PP2015_pag$tipo_orgn <- iconv(PP2015_pag$tipo_orgn, to='ASCII//TRANSLIT')
-PP2016_pag$tipo_orgn <- iconv(PP2016_pag$tipo_orgn, to='ASCII//TRANSLIT')
-PP2017_pag$tipo_orgn <- iconv(PP2017_pag$tipo_orgn, to='ASCII//TRANSLIT')
-PP2018_pag$tipo_orgn <- iconv(PP2018_pag$tipo_orgn, to='ASCII//TRANSLIT')
 ```
 
 Merge de bases
@@ -128,16 +116,16 @@ PP_FULL$index_OG_col <- row.names(PP_FULL)
 PP_FULL<-PP_FULL[order(PP_FULL$orgn),]
 ```
 
-Cambiar espacio vacios con NA
+Solo quedarnos con caracteres alfanuméricos y espacios
 ```{r}
-PP_FULL$tipo_orgn <- replace(PP_FULL$tipo_orgn, PP_FULL$tipo_orgn=='', NA)
+PP_FULL$orgn <- gsub("[^[:alnum:][:space:]]","",PP_FULL$orgn)
 ```
 
-Hacer nueva columna de organización modificada 
-```{r}
-PP_FULL$orgn_mod <- NA
-PP_FULL <- PP_FULL[,c(1,9,2:8)]
-```
+
+
+
+
+
 
 Poner etiqueda a cada organización manualmente [PAUSA MOMENTÁNEA]
 ```{r}
@@ -413,6 +401,62 @@ PP_FULL1 <- PP_FULL %>%
 
 ```
 
+
+
+
+
+
+Vector de prioridades para palabras clave
+```{r}
+reference_importance <- c("DISCAPACIDAD", 
+                          "ADULTO", 
+                          "COMEDOR",
+                          "MADRES", 
+                          "AMBIENTE", 
+                          "AREAS&VERDES", 
+                          "FAMILIAS", 
+                          "FAMILIAR", 
+                          "VECINOS", 
+                          "VECINA", 
+                          "PROPIETARIOS", 
+                          "ADJUDICATARIOS", 
+                          "POSECIONARIOS", 
+                          "VASO",
+                          "AGR", 
+                          "AGROPECUARIO", 
+                          "AGROPECUARIA",
+                          "COORDINAROA",
+                          "AAHH",
+                          "AH",
+                          "ASENTAMIENTO", 
+                          "URBANIZACION", 
+                          "URB",
+                          "ST",
+                          "SECTOR",
+                          "GR",
+                          "GRUPO")
+```
+
+Deconstrucción de filas para separar palabras, identificar las palabras claves y quedarnos con las más relevantes
+```{r}
+PP_FULL1 <- PP_FULL %>%
+  rowid_to_column() %>%
+    separate_rows(orgn, sep = " ")%>%
+    group_by(rowid) %>%
+    slice_min(match(orgn, reference_importance)) %>%
+  rename(tipo_orgn_nom = orgn) %>%
+  select(tipo_orgn_nom,rowid)
+
+n_occur_FULL1 <- data.frame(table(PP_FULL1$rowid)) #casos con doble repetición son casos que tienen dos palabras clave de la misma jerarquía, eliminarlos manualmente antes del merge
+```
+
+
+```{r}
+PP_FULL <- PP_FULL %>% 
+  rowid_to_column() %>% 
+  left_join(PP_FULL1,by ="rowid")
+```
+
 Poner etiqueta a los tipos de organizaciones según la identificación de palabras clave (Ejem: "vaso de leche", "comedor popular", "agropecuario", etc.)
 ```{r}
 #Para Asentamiento Humano poner [AH] antes del número que representa una unidad
@@ -428,24 +472,28 @@ Poner etiqueta a los tipos de organizaciones según la identificación de palabr
 #Para grupos Agropecuarios [AG] antes del número que representa una unidad
 #Para grupos Empresarios [AG] antes del número que representa una unidad
 
-PP_FULL1 <- PP_FULL1 %>%
+PP_FULL2 <- PP_FULL %>%
   mutate(tipo_orgn_mod =
            case_when(
-             str_detect(orgn, "URBANIZACION") | str_detect(orgn, "URB.") | str_detect(orgn, "SECTOR&GRUPO") ~ 'UR',
-             str_detect(orgn, "ASENTAMIENTO") ~ 'AH',
-             str_detect(orgn, "AGR. ") | str_detect(orgn, "AGROPECUARIO") | str_detect(orgn, "AGROPECUARIA") ~ 'AG',
-             str_detect(orgn, "VASO ") ~ 'VL', 
-             str_detect(orgn, "PROPIETARIOS") | str_detect(orgn, "ADJUDICATARIOS")| str_detect(orgn, "POSECIONARIOS") ~ 'AP',
-             str_detect(orgn, "FAMILIAS") | str_detect(orgn, "FAMILIAR") | str_detect(orgn, "VECINOS") | str_detect(orgn, "VECINA") ~ 'FV',
-             str_detect(orgn, "AMBIENTE") | str_detect(orgn, "AREAS&VERDES") ~ 'MA',
-             str_detect(orgn, "CLUB DE MADRES") ~ 'CM',
-             str_detect(orgn, "COMEDOR") ~ 'CP',
-             str_detect(orgn, "ADULTO MAYOR") ~ 'SR',
-             str_detect(orgn, "DISCAPACIDAD") ~ 'HC'
-             ))
-
-PP_FULL1 <- PP_FULL1[,c(1:3,10,4:9)]
+             str_detect(tipo_orgn_nom, "URBANIZACION") | str_detect(tipo_orgn_nom, "URB.") | str_detect(tipo_orgn_nom, "SECTOR&GRUPO") ~ 'UR',
+             str_detect(tipo_orgn_nom, "ASENTAMIENTO") | str_detect(tipo_orgn_nom, "A.H") | str_detect(tipo_orgn_nom, "A.H.") | str_detect(tipo_orgn_nom, "AA.HH.") ~ 'AH',
+             str_detect(tipo_orgn_nom, "AGR. ") | str_detect(tipo_orgn_nom, "AGROPECUARIO") | str_detect(tipo_orgn_nom, "AGROPECUARIA") ~ 'AG',
+             str_detect(tipo_orgn_nom, "VASO ") ~ 'VL', 
+             str_detect(tipo_orgn_nom, "PROPIETARIOS") | str_detect(tipo_orgn_nom, "ADJUDICATARIOS")| str_detect(tipo_orgn_nom, "POSECIONARIOS") ~ 'AP',
+             str_detect(tipo_orgn_nom, "FAMILIAS") | str_detect(tipo_orgn_nom, "FAMILIAR") | str_detect(tipo_orgn_nom, "VECINOS") | str_detect(tipo_orgn_nom, "VECINA") ~ 'FV',
+             str_detect(tipo_orgn_nom, "AMBIENTE") | str_detect(tipo_orgn_nom, "AREAS&VERDES") ~ 'MA',
+             str_detect(tipo_orgn_nom, "CLUB DE MADRES") ~ 'CM',
+             str_detect(tipo_orgn_nom, "COMEDOR") ~ 'CP',
+             str_detect(tipo_orgn_nom, "ADULTO MAYOR") ~ 'SR',
+             str_detect(tipo_orgn_nom, "DISCAPACIDAD") ~ 'HC',
+             TRUE ~ 'OR'
+           ))
 ```
+
+
+
+
+
 
 Subset de variables: organizaciones y variables de año / tipo de organización y variables de año
 ```{r}
@@ -457,10 +505,5 @@ Juntar filas según etiqueta de organizaciones / tipo de organizaciones en aggre
 ```{r}
 PP_SUBSET[,c(2:6)] <- sapply(PP_SUBSET[c(2:6)],as.numeric)
 Resumen_Tipo_Org<- aggregate(. ~ tipo_orgn_mod, data = PP_SUBSET, sum)
-```
-
-Creación de nueva columna de suma de variables dicotómicas de año
-```{r}
-
 ```
 
