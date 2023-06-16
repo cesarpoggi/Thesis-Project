@@ -16,9 +16,35 @@ prueba_bd=import(prueba_html, encoding = 'UTF-8')
 ```
 
 ```{r}
+prueba_bd$orgn <- gsub("[^[:alnum:][:space:]]","",prueba_bd$orgn)
+```
+
+
+```{r}
 #Lista de palabras según prioridades
 
-reference_importance <- c("DISCAPACIDAD", "ADULTO MAYOR", "COMEDOR","MADRES", "AMBIENTE", "AREAS&VERDES", "FAMILIAS", "FAMILIAR", "VECINOS", "VECINA", "PROPIETARIOS", "ADJUDICATARIOS", "POSECIONARIOS", "VASO","AGR.", "AGROPECUARIO", "AGROPECUARIA", "ASENTAMIENTO", "URBANIZACION", "URB.", "SECTOR&GRUPO") #cambiar a palabras juntas
+reference_importance <- c("DISCAPACIDAD", 
+                          "ADULTO", 
+                          "COMEDOR",
+                          "MADRES", 
+                          "AMBIENTE", 
+                          "AREAS&VERDES", 
+                          "FAMILIAS", 
+                          "FAMILIAR", 
+                          "VECINOS", 
+                          "VECINA", 
+                          "PROPIETARIOS", 
+                          "ADJUDICATARIOS", 
+                          "POSECIONARIOS", 
+                          "VASO",
+                          "AGR", 
+                          "AGROPECUARIO", 
+                          "AGROPECUARIA", 
+                          "ASENTAMIENTO", 
+                          "URBANIZACION", 
+                          "URB", 
+                          "SECTOR",
+                          "GRUPO") #cambiar a palabras juntas
 
 library(tidyr)
 library(dplyr)
@@ -29,13 +55,15 @@ library(tibble)
 #  group_by(orgn) %>% count() %>% select(-n) 
 
 pr <- prueba_bd %>%
-    rowid_to_column() %>%
+  rowid_to_column() %>%
     separate_rows(orgn, sep = " ")%>%
     group_by(rowid) %>%
     slice_min(match(orgn, reference_importance)) %>%
-  
   rename(tipo_orgn_nom = orgn) %>%
   select(tipo_orgn_nom,rowid)
+
+
+n_occur <- data.frame(table(pr$rowid))
   
 prueba_bd <- prueba_bd %>% 
   rowid_to_column() %>% 
@@ -57,10 +85,5 @@ prueba_bd_v2 <- prueba_bd %>%
              str_detect(tipo_orgn_nom, "DISCAPACIDAD") ~ 'HC',
              TRUE ~ 'OR'
            ))
-
-
-distinct(prueba_bd_v2, tipo_orgn_mod, AÑO2015, AÑO2016, .keep_all = TRUE)
-#Quedarme con filas con columans diferentes en rowid, tipo de org, y los años
-#???
 ```
 
