@@ -409,6 +409,7 @@ PP_FULL1 <- PP_FULL %>%
 Vector de prioridades para palabras clave
 ```{r}
 reference_importance <- c("DISCAPACIDAD",
+                          "SORDOS",
                           
                           "CULTURAL",
                           "CULTURA",
@@ -418,6 +419,7 @@ reference_importance <- c("DISCAPACIDAD",
                           "COMEDOR",
                           "COMEDORES",
                           "COMEDORSARITA",
+                          "OSBCOMEDOR",
                           
                           "ADULTO",
                           
@@ -436,9 +438,12 @@ reference_importance <- c("DISCAPACIDAD",
                           "RECICLADORES",
                           "BOMBEROS",
                           "TRANSPORTISTAS",
+                          "MOTOTAXISTAS",
+                          "AUTOMOTRICES",
                           
                           "EMPRESARIOS",
                           "MICROEMPRESARIOS",
+                          "INDUSTRIALES",
                           
                           "MERCADO",
                           "COMERCANTES",
@@ -465,11 +470,7 @@ reference_importance <- c("DISCAPACIDAD",
                           "NATURALES",
                           
                           "SALUD",
-                          
-                          "FAMILIAS", 
-                          "FAMILIAR",
-                          "FAMLFUNDADORES",
-                          "WASI",
+                        
                           
                           "VECINOS",
                           "VECINAL",
@@ -508,6 +509,7 @@ reference_importance <- c("DISCAPACIDAD",
                           "RIESGO",
                           "PROSERVICIOS",
                           "ASFALTADO",
+                          "AGUA",
                         
                           "AGR", 
                           "AGROPECUARIO", 
@@ -526,6 +528,11 @@ reference_importance <- c("DISCAPACIDAD",
                           "ASENTAMIENTO",
                           "AMPAAHH",
                           "PPJJ",
+                          
+                          "FAMILIAS", 
+                          "FAMILIAR",
+                          "FAMLFUNDADORES",
+                          "WASI",
                           
                           "COORDINADORA",
                           "COORDINAROA",
@@ -632,7 +639,8 @@ Poner etiqueta a los tipos de organizaciones según la identificación de palabr
 
 PP_FULL3 <- PP_FULL2 %>%
   mutate(tipo_orgn_mod =
-           case_when(str_detect(tipo_orgn_nom, "DISCAPACIDAD") ~ 'HC',
+           case_when(str_detect(tipo_orgn_nom, "DISCAPACIDAD") | 
+                       str_detect(tipo_orgn_nom, "SORDOS") ~ 'HC',
                      
                      str_detect(tipo_orgn_nom, "CULTURAL") | 
                        str_detect(tipo_orgn_nom, "CULTURA") ~ 'CT',
@@ -671,7 +679,9 @@ PP_FULL3 <- PP_FULL2 %>%
                        str_detect(tipo_orgn_nom, "COMERCANTES") |
                        str_detect(tipo_orgn_nom, "MCDO") |
                        str_detect(tipo_orgn_nom, "COMERCIANTES") |
-                       str_detect(tipo_orgn_nom, "SUTRAMUVES") ~ 'TB',
+                       str_detect(tipo_orgn_nom, "SUTRAMUVES") |
+                       str_detect(tipo_orgn_nom, "MOTOTAXISTAS") |
+                       str_detect(tipo_orgn_nom, "AUTOMOTRICES") ~ 'TB',
                      
                      
                      str_detect(tipo_orgn_nom, "EMPRESARIOS") |
@@ -680,6 +690,7 @@ PP_FULL3 <- PP_FULL2 %>%
                        str_detect(tipo_orgn_nom, "EIRL") |
                        str_detect(tipo_orgn_nom, "ESTACIONAMIENTO") |
                        str_detect(tipo_orgn_nom, "APEMIC") |
+                       str_detect(tipo_orgn_nom, "INDUSTRIALES") |
                        str_detect(tipo_orgn_nom, "APEMIVES") |
                        str_detect(tipo_orgn_nom, "APEMINAVES") |
                        str_detect(tipo_orgn_nom, "APIMEAVES") ~ 'EM',
@@ -724,6 +735,7 @@ PP_FULL3 <- PP_FULL2 %>%
                        str_detect(tipo_orgn_nom, "ASOCADJCONJHABPACHACAMAC") |
                        str_detect(tipo_orgn_nom, "ADJ") |
                        str_detect(tipo_orgn_nom, "POSECIONARIOS") |
+                       str_detect(tipo_orgn_nom, "POSESIONARIOS") |
                        str_detect(tipo_orgn_nom, "ASOC.VIV") |
                        str_detect(tipo_orgn_nom, "ASOCVIVIENDA") | #
                        str_detect(tipo_orgn_nom, "VIVIENDA") | #
@@ -741,7 +753,8 @@ PP_FULL3 <- PP_FULL2 %>%
                        str_detect(tipo_orgn_nom, "RIESGOS") |
                        str_detect(tipo_orgn_nom, "RIESGO") | #
                        str_detect(tipo_orgn_nom, "PROSERVICIOS") |
-                       str_detect(tipo_orgn_nom, "ASFALTADO") ~ 'OB', 
+                       str_detect(tipo_orgn_nom, "ASFALTADO") |
+                       str_detect(tipo_orgn_nom, "AGUA") ~ 'OB', 
                      
                      str_detect(tipo_orgn_nom, "AGROPECUARIO") |
                        str_detect(tipo_orgn_nom, "AGROPECUARIA") |
@@ -805,14 +818,43 @@ PP_FULL3 <- PP_FULL2 %>%
 ```
 
 
+```{r}
+PP_FULL2$tipo_orgn_mod = 
+  ifelse(PP_FULL2$tipo_orgn_nom  %in% c("DISCAPACIDAD","SORDOS"),"HC",
+         ifelse(PP_FULL2$tipo_orgn_nom %in% c("CULTURAL","CULTURA"), "CT",
+                ifelse(PP_FULL2$tipo_orgn_nom == "ADULTO", "SR",
+                       ifelse(PP_FULL2$tipo_orgn_nom == "MUNICIPALIDAD", "MN",
+                              ifelse(PP_FULL2$tipo_orgn_nom %in% c("COMEDORES","COMEDOR", "COMEDORSARITA","DICECOA","OSBCOMEDOR"),"CP",
+                                     ifelse(PP_FULL2$tipo_orgn_nom %in% c("VASO","VDL"),"VL",
+                                            ifelse(PP_FULL2$tipo_orgn_nom %in% c("MADRES","MADRE","MADRESNUESTRO","BENDICION"),"CM",
+                                                   ifelse(PP_FULL2$tipo_orgn_nom %in% c("COORDINADORA","COORDINAROA","CORDINADORA","COORDIANDORA"), "CD",
+                                                          ifelse(PP_FULL2$tipo_orgn_nom %in% c("ASOCDE","ASOCTRABJ","TRABAJADORES", "ASOCTRABAJADORES", "RECICLADORES","BOMBEROS","TRANSPORTISTAS","MERCADO","COMERCANTES","MCDO","COMERCIANTES","SUTRAMUVES","MOTOTAXISTAS","AUTOMOTRICES"), "TB",
+                                                                 ifelse(PP_FULL2$tipo_orgn_nom %in% c("EMPRESARIOS","MICROEMPRESARIOS","SAC","EIRL","ESTACIONAMIENTO","APEMIC","APEMIVES","APEMINAVES","APIMEAVES", "INDUSTRIALES"),"EM",
+                                                                        ifelse(PP_FULL2$tipo_orgn_nom %in% c("EDUCAION","EDUCACION","EDUCATIVO","IE","IEN","IESTP","CETPRO"), "ED",
+                                                                               ifelse(PP_FULL2$tipo_orgn_nom %in% c("AMBIENTE","AMBIENTAL","VERDES","VERDE","NATURALES"),"MA",
+                                                                                      ifelse(PP_FULL2$tipo_orgn_nom %in% c("APROCUAVES","APROSCUAVES","SALUD","APROSCUAVESASOCIACION"),"SA",
+                                                                                             ifelse(PP_FULL2$tipo_orgn_nom %in%
+                                                                                                      c("FAMILIAS","FAMILIAR","FAMLFUNDADORES","WASI"), "FA",
+                                                                                                    ifelse(PP_FULL2$tipo_orgn_nom %in% c("VECINOS","VECINAL","JJ", "POBLADORES","VECINA","VECINALES","COMUNAL","UPIS"), "VC",
+                                                                                                           ifelse(PP_FULL2$tipo_orgn_nom %in%  c("PROPIETARIOS","ADJUDICATARIOS","ASOCADJCONJHABPACHACAMAC","ADJ","POSECIONARIOS", "POSESIONARIOS","ASOC.VIV","ASOCVIVIENDA","VIVIENDA","ASOCVIV","ASOCVIVISTA","ASOCVIVSTA","HABITACIONAL","VIVI","VIV"), "PR",
+                                                                                                                  ifelse(PP_FULL2$tipo_orgn_nom == "SEGURIDAD", "SG", 
+                                                                                                                         ifelse(PP_FULL2$tipo_orgn_nom %in% c("OBRAS","PISTAS","RIESGOS","RIESGO","PROSERVICIOS","ASFALTADO","AGUA"), "OB",
+                                                                                                                                ifelse(PP_FULL2$tipo_orgn_nom %in% c("AGROPECUARIO","AGROPECUARIA","AGROP","AGROSILVES","AGR","AGROPAGROSILVES","MENSAJERA"),'AG',
+                                                                                                                                       ifelse(PP_FULL2$tipo_orgn_nom %in% c("HERMANDAD","REFORMADOR"), "RE",
+                                                                                                                                              ifelse(PP_FULL2$tipo_orgn_nom %in% c("MUJERES","FEPOMUVES","CORDIMUVES","DIRIGENTAS"), "GE",
+                                                                                                                                                     ifelse(PP_FULL2$tipo_orgn_nom %in% c("AAHH","ASENTAMIENTO","AH","AMPAAHH","PPJJ","AA","HH"), "AH",
+                                                                                                                                                            ifelse(PP_FULL2$tipo_orgn_nom %in% c("AMP","AP","AH","AMPLIACION","URBANIZACION","URB","ST","SECTOR","GR","GRUPO"), "UR", "OO")))))))))))))))))))))))
+                                                                                                                      
+
+```
 
 
 
 
 Subset de variables: organizaciones y variables de año / tipo de organización y variables de año
 ```{r}
-PP_SUBSET <- PP_FULL1[,c(4,5:9)]
-distinct(PP_SUBSET, tipo_orgn_mod, AÑO2015, AÑO2016, .keep_all = TRUE)
+PP_SUBSET <- PP_FULL2[,c(10,3:7)]
+#distinct(PP_SUBSET, tipo_orgn_mod, AÑO2015, AÑO2016, .keep_all = TRUE)
 ```
 
 Juntar filas según etiqueta de organizaciones / tipo de organizaciones en aggregate
