@@ -408,61 +408,179 @@ PP_FULL1 <- PP_FULL %>%
 
 Vector de prioridades para palabras clave
 ```{r}
-reference_importance <- c("DISCAPACIDAD", 
+reference_importance <- c("DISCAPACIDAD",
+                          
                           "CULTURAL",
-                          "ADULTO", 
+                          
+                          "ADULTO",
+                          
+                          "BOMBEROS",
+                          
+                          "MUNICIPALIDAD",
+                          
                           "COMEDOR",
+                          "COMEDORES",
+                          "COMEDORSARITA",
+                          
+                          "VASO",
+                          
                           "MADRES",
+                          "MADRE",
+                          "MADRESNUESTRO",
+                          
+                          "RECICLADORES",
+                          
+                          "TRANSPORTISTAS",
+                          
                           "EDUCAION",
+                          "IE",
+                          "IEN",
+                          "IESTP",
+                          
                           "AMBIENTE", 
-                          "AREAS&VERDES", 
+                          "VERDES",
+                          "VERDE",
+                          "NATURALES",
+                          
                           "FAMILIAS", 
-                          "FAMILIAR", 
+                          "FAMILIAR",
+                          "FAMLFUNDADORES",
+                          "WASI",
+                          
                           "VECINOS",
+                          "VECINAL",
                           "POBLADORES",
-                          "VECINA", 
+                          "VECINA",
+                          "VECINALES",
+                          "COMUNAL",
+                          
                           "PROPIETARIOS", 
                           "ADJUDICATARIOS",
+                          "ASOCADJCONJHABPACHACAMAC",
                           "ADJ",
                           "POSECIONARIOS", 
-                          "VASO",
+                          
+                          
                           "SEGURIDAD",
+                          
                           "CETPRO",
-                          "COMITE",
-                          "BRIGADA",
+                          
+                          "OBRAS",
+                          "PISTAS",
+                          "RIESGOS",
+                          "RIESGO",
+                        
+                          
                           "AGR", 
                           "AGROPECUARIO", 
                           "AGROPECUARIA",
                           "AGROP",
                           "AGROSILVES",
                           "AGROPAGROSILVES",
-                          "COORDINAROA",
+                          
+              
+                          
                           "EMPRESARIOS",
                           "MICROEMPRESARIOS",
+                          
+                          "MERCADO",
+                          "COMERCANTES",
+                          "MCDO",
+                          "COMERCIANTES",
+                          
                           "AAHH",
                           "AH",
-                          "ASENTAMIENTO", 
+                          "ASENTAMIENTO",
+                          "AMPAAHH",
+                          "PPJJ",
+                          "AMP",
+                          "AP",
+                          "AMPLIACION",
+                          
+                          "HERMANDAD",
+                          "MUJERES",
+                          
+                          
                           "URBANIZACION", 
                           "URB",
                           "ST",
                           "SECTOR",
                           "GR",
                           "GRUPO",
+                          
                           "COORDINADORA",
+                          "COORDINAROA",
+                          "CORDINADORA",
+                          "COORDIANDORA",
+                          
+                          
                           "ASOC",
+                          "ASOCIACIAN",
+                          "ASOCIACION",
+                          "BENDICION",
+                          "ASSOCIACION",
+                          "ASOCIAICON",
+                          "ASCIAICON",
+                          "COMISION",
+                          "COOP",
+                          "COOPDE",
+                          "ORGANIZACION",
+                          "DIRECTIVA",
+                          "JUNTA",
+                          "COMITE",
+                          "BRIGADA",
+                          "SECRETARIA",
+                          "DIRECTIVA",
+                          "CENTRAL",
+                          
+                          
+                          
                           "ASOCDE",
                           "ASOCTRABJ",
                           "ASOCTRABAJADORES",
+                          
+                          "ASOCIACION",
                           "ASOC.VIV",
                           "ASOCVIVIENDA",
                           "VIVIENDA",
-                          "ASOCIACIAN",
-                          "ASOCIACION",
-                          "BENDICIAN",
-                          "ASSOCIACION",
+                          "ASOCVIV",
+                          "ASOCVIVISTA",
+                          "ASOCVIVSTA",
+                          "HABITACIONAL",
+                          "VIVI",
+                          "VIV",
+                          
+                          
                           "ASPROREP",
+                          
                           "COMERCIAL",
-                          "CENTRO")
+                          
+                          "CENTRO",
+                          
+                          "SAC",
+                          "EIRL",
+                          
+                          "VELASCO",
+                          "REVISTA",
+                          "MENSAJERA",
+                          "ESTACIONAMIENTO",
+                          "REFORMADOR",
+                          "UPIS",
+                          "APAFA",
+                          "APEMIC",
+                          "APEMINAVES",
+                          "APEMIVES",
+                          "APROCUAVES",
+                          "APROSCUAVES",
+                          "APROSCUAVESASOCIACION",
+                          "CORDIMUVES",
+                          "FEPOMUVES",
+                          "JUVES",
+                          "SUTRAMUVES",
+                          "APIMEAVES",
+                          "9696459",
+                          "CORDINADOS",
+                          "DICECOA")
 ```
 
 Deconstrucción de filas para separar palabras, identificar las palabras claves y quedarnos con las más relevantes
@@ -476,6 +594,9 @@ PP_FULL1 <- PP_FULL %>%
   select(tipo_orgn_nom,rowid)
 
 n_occur_FULL1 <- data.frame(table(PP_FULL1$rowid)) #casos con doble repetición son casos que tienen dos palabras clave de la misma jerarquía, eliminarlos manualmente antes del merge
+
+PP_FULL1 <- PP_FULL1 %>%
+  filter(!duplicated(rowid)) #Diferencia de 2 filas con la data original, significa que hay una duplicacion en la data original
 ```
 
 
@@ -483,6 +604,8 @@ n_occur_FULL1 <- data.frame(table(PP_FULL1$rowid)) #casos con doble repetición 
 PP_FULL2 <- PP_FULL %>% 
   rowid_to_column() %>% 
   left_join(PP_FULL1,by ="rowid")
+
+n_occur_FULL2 <- data.frame(table(PP_FULL2$rowid))
 ```
 
 Poner etiqueta a los tipos de organizaciones según la identificación de palabras clave (Ejem: "vaso de leche", "comedor popular", "agropecuario", etc.)
