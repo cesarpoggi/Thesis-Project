@@ -411,10 +411,7 @@ Vector de prioridades para palabras clave
 reference_importance <- c("DISCAPACIDAD",
                           
                           "CULTURAL",
-                          
-                          "ADULTO",
-                          
-                          "BOMBEROS",
+                          "CULTURA",
                           
                           "MUNICIPALIDAD",
                           
@@ -422,63 +419,23 @@ reference_importance <- c("DISCAPACIDAD",
                           "COMEDORES",
                           "COMEDORSARITA",
                           
+                          "ADULTO",
+                          
                           "VASO",
+                          "VDL",
                           
                           "MADRES",
                           "MADRE",
                           "MADRESNUESTRO",
                           
-                          "RECICLADORES",
                           
-                          "TRANSPORTISTAS",
-                          
-                          "EDUCAION",
-                          "IE",
-                          "IEN",
-                          "IESTP",
-                          
-                          "AMBIENTE", 
-                          "VERDES",
-                          "VERDE",
-                          "NATURALES",
-                          
-                          "FAMILIAS", 
-                          "FAMILIAR",
-                          "FAMLFUNDADORES",
-                          "WASI",
-                          
-                          "VECINOS",
-                          "VECINAL",
-                          "POBLADORES",
-                          "VECINA",
-                          "VECINALES",
-                          "COMUNAL",
-                          
-                          "PROPIETARIOS", 
-                          "ADJUDICATARIOS",
-                          "ASOCADJCONJHABPACHACAMAC",
-                          "ADJ",
-                          "POSECIONARIOS", 
-                          
-                          
-                          "SEGURIDAD",
-                          
-                          "CETPRO",
-                          
-                          "OBRAS",
-                          "PISTAS",
-                          "RIESGOS",
-                          "RIESGO",
+                          "MUJERES",
+                          "DIRIGENTAS",
                         
                           
-                          "AGR", 
-                          "AGROPECUARIO", 
-                          "AGROPECUARIA",
-                          "AGROP",
-                          "AGROSILVES",
-                          "AGROPAGROSILVES",
-                          
-              
+                          "RECICLADORES",
+                          "BOMBEROS",
+                          "TRANSPORTISTAS",
                           
                           "EMPRESARIOS",
                           "MICROEMPRESARIOS",
@@ -488,39 +445,101 @@ reference_importance <- c("DISCAPACIDAD",
                           "MCDO",
                           "COMERCIANTES",
                           
+                          
+                          "SAC",
+                          "EIRL",
+                          "ESTACIONAMIENTO",
+                          
+                          "EDUCAION",
+                          "EDUCACION",
+                          "EDUCATIVO",
+                          "IE",
+                          "IEN",
+                          "IESTP",
+                          "CETPRO",
+                          
+                          "AMBIENTE",
+                          "AMBIENTAL",
+                          "VERDES",
+                          "VERDE",
+                          "NATURALES",
+                          
+                          "SALUD",
+                          
+                          "FAMILIAS", 
+                          "FAMILIAR",
+                          "FAMLFUNDADORES",
+                          "WASI",
+                          
+                          "VECINOS",
+                          "VECINAL",
+                          "JJ",
+                          "POBLADORES",
+                          "VECINA",
+                          "VECINALES",
+                          "COMUNAL",
+                          
+                          
+                          "PROPIETARIOS", 
+                          "ADJUDICATARIOS",
+                          "ASOCADJCONJHABPACHACAMAC",
+                          "ADJ",
+                          "POSECIONARIOS",
+                          "ASOC.VIV",
+                          "ASOCVIVIENDA",
+                          "VIVIENDA",
+                          "ASOCVIV",
+                          "ASOCVIVISTA",
+                          "ASOCVIVSTA",
+                          "HABITACIONAL",
+                          "VIVI",
+                          "VIV",
+                          
+                          "ASOCDE",
+                          "ASOCTRABJ",
+                          "ASOCTRABAJADORES",
+                          "TRABAJADORES",
+                          
+                          "SEGURIDAD",
+                          
+                          "OBRAS",
+                          "PISTAS",
+                          "RIESGOS",
+                          "RIESGO",
+                          "PROSERVICIOS",
+                          "ASFALTADO",
+                        
+                          "AGR", 
+                          "AGROPECUARIO", 
+                          "AGROPECUARIA",
+                          "AGROP",
+                          "AGROSILVES",
+                          "AGROPAGROSILVES",
+                          "MENSAJERA",
+                          
+                          "HERMANDAD",
+                          
                           "AAHH",
                           "AH",
+                          "AA",
+                          "HH",
                           "ASENTAMIENTO",
                           "AMPAAHH",
                           "PPJJ",
-                          "AMP",
-                          "AP",
-                          "AMPLIACION",
-                          
-                          "HERMANDAD",
-                          "MUJERES",
-                          
-                          
-                          "URBANIZACION", 
-                          "URB",
-                          "ST",
-                          "SECTOR",
-                          "GR",
-                          "GRUPO",
                           
                           "COORDINADORA",
                           "COORDINAROA",
                           "CORDINADORA",
                           "COORDIANDORA",
                           
-                          
-                          "ASOC",
-                          "ASOCIACIAN",
-                          "ASOCIACION",
-                          "BENDICION",
-                          "ASSOCIACION",
-                          "ASOCIAICON",
-                          "ASCIAICON",
+                          "AMP",
+                          "AP",
+                          "AMPLIACION",
+                          "ST",
+                          "SECTOR",
+                          "GR",
+                          "GRUPO",
+                        
                           "COMISION",
                           "COOP",
                           "COOPDE",
@@ -533,40 +552,25 @@ reference_importance <- c("DISCAPACIDAD",
                           "DIRECTIVA",
                           "CENTRAL",
                           
-                          
-                          
-                          "ASOCDE",
-                          "ASOCTRABJ",
-                          "ASOCTRABAJADORES",
-                          
+                          "ASOC",
+                          "ASSOCIACION",
+                          "ASOCIAICON",
+                          "ASCIAICON",
+                          "ASOCIACIAN",
                           "ASOCIACION",
-                          "ASOC.VIV",
-                          "ASOCVIVIENDA",
-                          "VIVIENDA",
-                          "ASOCVIV",
-                          "ASOCVIVISTA",
-                          "ASOCVIVSTA",
-                          "HABITACIONAL",
-                          "VIVI",
-                          "VIV",
+                          "ASOCIACION",
                           
-                          
-                          "ASPROREP",
-                          
+                    
                           "COMERCIAL",
                           
                           "CENTRO",
                           
-                          "SAC",
-                          "EIRL",
-                          
+                          "ASPROREP",
                           "VELASCO",
+                          "BENDICION",
                           "REVISTA",
-                          "MENSAJERA",
-                          "ESTACIONAMIENTO",
                           "REFORMADOR",
                           "UPIS",
-                          "APAFA",
                           "APEMIC",
                           "APEMINAVES",
                           "APEMIVES",
@@ -579,9 +583,12 @@ reference_importance <- c("DISCAPACIDAD",
                           "SUTRAMUVES",
                           "APIMEAVES",
                           "9696459",
-                          "CORDINADOS",
-                          "DICECOA")
+                          "DICECOA",
+                          
+                          "URB",
+                          "URBANIZACION")
 ```
+
 
 Deconstrucción de filas para separar palabras, identificar las palabras claves y quedarnos con las más relevantes
 ```{r}
@@ -625,20 +632,176 @@ Poner etiqueta a los tipos de organizaciones según la identificación de palabr
 
 PP_FULL3 <- PP_FULL2 %>%
   mutate(tipo_orgn_mod =
-           case_when(
-             str_detect(tipo_orgn_nom, "URBANIZACION") | str_detect(tipo_orgn_nom, "URB.") | str_detect(tipo_orgn_nom, "SECTOR&GRUPO") ~ 'UR',
-             str_detect(tipo_orgn_nom, "ASENTAMIENTO") | str_detect(tipo_orgn_nom, "A.H") | str_detect(tipo_orgn_nom, "A.H.") | str_detect(tipo_orgn_nom, "AA.HH.") ~ 'AH',
-             str_detect(tipo_orgn_nom, "AGR. ") | str_detect(tipo_orgn_nom, "AGROPECUARIO") | str_detect(tipo_orgn_nom, "AGROPECUARIA") ~ 'AG',
-             str_detect(tipo_orgn_nom, "VASO ") ~ 'VL', 
-             str_detect(tipo_orgn_nom, "PROPIETARIOS") | str_detect(tipo_orgn_nom, "ADJUDICATARIOS")| str_detect(tipo_orgn_nom, "POSECIONARIOS") ~ 'AP',
-             str_detect(tipo_orgn_nom, "FAMILIAS") | str_detect(tipo_orgn_nom, "FAMILIAR") | str_detect(tipo_orgn_nom, "VECINOS") | str_detect(tipo_orgn_nom, "VECINA") ~ 'FV',
-             str_detect(tipo_orgn_nom, "AMBIENTE") | str_detect(tipo_orgn_nom, "AREAS&VERDES") ~ 'MA',
-             str_detect(tipo_orgn_nom, "CLUB DE MADRES") ~ 'CM',
-             str_detect(tipo_orgn_nom, "COMEDOR") ~ 'CP',
-             str_detect(tipo_orgn_nom, "ADULTO MAYOR") ~ 'SR',
-             str_detect(tipo_orgn_nom, "DISCAPACIDAD") ~ 'HC',
-             TRUE ~ 'OR'
-           ))
+           case_when(str_detect(tipo_orgn_nom, "DISCAPACIDAD") ~ 'HC',
+                     
+                     str_detect(tipo_orgn_nom, "CULTURAL") | 
+                       str_detect(tipo_orgn_nom, "CULTURA") ~ 'CT',
+                     
+                     str_detect(tipo_orgn_nom, "ADULTO") ~ 'SR',
+                     
+                     str_detect(tipo_orgn_nom, "MUNICIPALIDAD") ~ 'MN', 
+                     
+                     str_detect(tipo_orgn_nom, "COMEDOR") | 
+                       str_detect(tipo_orgn_nom, "COMEDORES")| 
+                       str_detect(tipo_orgn_nom, "COMEDORSARITA") |
+                       str_detect(tipo_orgn_nom, "DICECOA") ~ 'CP',
+                     
+                     str_detect(tipo_orgn_nom, "VASO") |
+                       str_detect(tipo_orgn_nom, "VDL") ~ 'VL',
+                     
+                     str_detect(tipo_orgn_nom, "MADRES") | 
+                       str_detect(tipo_orgn_nom, "MADRE") |
+                       str_detect(tipo_orgn_nom, "MADRESNUESTRO") |
+                       str_detect(tipo_orgn_nom, "BENDICION") ~ 'CM',
+                     
+                     str_detect(tipo_orgn_nom, "COORDINADORA") |
+                       str_detect(tipo_orgn_nom, "COORDINAROA") |
+                       str_detect(tipo_orgn_nom, "CORDINADORA") |
+                       str_detect(tipo_orgn_nom, "COORDIANDORA") ~ 'CD',
+                     
+ 
+                     str_detect(tipo_orgn_nom, "ASOCDE") |
+                       str_detect(tipo_orgn_nom, "ASOCTRABJ") |
+                       str_detect(tipo_orgn_nom, "TRABAJADORES") |
+                       str_detect(tipo_orgn_nom, "ASOCTRABAJADORES") |
+                       str_detect(tipo_orgn_nom, "RECICLADORES") |
+                       str_detect(tipo_orgn_nom, "BOMBEROS") |
+                       str_detect(tipo_orgn_nom, "TRANSPORTISTAS") |
+                       str_detect(tipo_orgn_nom, "MERCADO") |
+                       str_detect(tipo_orgn_nom, "COMERCANTES") |
+                       str_detect(tipo_orgn_nom, "MCDO") |
+                       str_detect(tipo_orgn_nom, "COMERCIANTES") |
+                       str_detect(tipo_orgn_nom, "SUTRAMUVES") ~ 'TB',
+                     
+                     
+                     str_detect(tipo_orgn_nom, "EMPRESARIOS") |
+                       str_detect(tipo_orgn_nom, "MICROEMPRESARIOS") |
+                       str_detect(tipo_orgn_nom, "SAC") |
+                       str_detect(tipo_orgn_nom, "EIRL") |
+                       str_detect(tipo_orgn_nom, "ESTACIONAMIENTO") |
+                       str_detect(tipo_orgn_nom, "APEMIC") |
+                       str_detect(tipo_orgn_nom, "APEMIVES") |
+                       str_detect(tipo_orgn_nom, "APEMINAVES") |
+                       str_detect(tipo_orgn_nom, "APIMEAVES") ~ 'EM',
+                     
+                     str_detect(tipo_orgn_nom, "EDUCAION") |
+                       str_detect(tipo_orgn_nom, "EDUCACION") |
+                       str_detect(tipo_orgn_nom, "EDUCATIVO") |
+                       str_detect(tipo_orgn_nom, "IE") |
+                       str_detect(tipo_orgn_nom, "IEN") |
+                       str_detect(tipo_orgn_nom, "IESTP") |
+                       str_detect(tipo_orgn_nom, "CETPRO") ~ 'ED',
+                     
+                     str_detect(tipo_orgn_nom, "AMBIENTE") |#
+                       str_detect(tipo_orgn_nom, "AMBIENTAL") |
+                       str_detect(tipo_orgn_nom, "VERDES") |
+                       str_detect(tipo_orgn_nom, "VERDE") |
+                       str_detect(tipo_orgn_nom, "NATURALES") ~ 'MA',
+                     
+                     str_detect(tipo_orgn_nom, "APROCUAVES") |
+                       str_detect(tipo_orgn_nom, "APROSCUAVES") |
+                       str_detect(tipo_orgn_nom, "SALUD") |
+                       str_detect(tipo_orgn_nom, "APROSCUAVESASOCIACION") ~ 'SA',
+                     
+                    
+                     str_detect(tipo_orgn_nom, "FAMILIAS") |
+                       str_detect(tipo_orgn_nom, "FAMILIAR") |
+                       str_detect(tipo_orgn_nom, "FAMLFUNDADORES") |
+                       str_detect(tipo_orgn_nom, "WASI") ~ 'FA',
+                     
+                     str_detect(tipo_orgn_nom, "VECINOS") |
+                       str_detect(tipo_orgn_nom, "VECINAL") |
+                       str_detect(tipo_orgn_nom, "JJ") |
+                       str_detect(tipo_orgn_nom, "POBLADORES") |
+                       str_detect(tipo_orgn_nom, "VECINA") |
+                       str_detect(tipo_orgn_nom, "VECINALES") |
+                       str_detect(tipo_orgn_nom, "COMUNAL") | 
+                       str_detect(tipo_orgn_nom, "UPIS") ~ 'VC',
+                    
+                     
+                     str_detect(tipo_orgn_nom, "PROPIETARIOS") | #
+                       str_detect(tipo_orgn_nom, "ADJUDICATARIOS") |
+                       str_detect(tipo_orgn_nom, "ASOCADJCONJHABPACHACAMAC") |
+                       str_detect(tipo_orgn_nom, "ADJ") |
+                       str_detect(tipo_orgn_nom, "POSECIONARIOS") |
+                       str_detect(tipo_orgn_nom, "ASOC.VIV") |
+                       str_detect(tipo_orgn_nom, "ASOCVIVIENDA") | #
+                       str_detect(tipo_orgn_nom, "VIVIENDA") | #
+                       str_detect(tipo_orgn_nom, "ASOCVIV") |
+                       str_detect(tipo_orgn_nom, "ASOCVIVISTA") |
+                       str_detect(tipo_orgn_nom, "ASOCVIVSTA") |
+                       str_detect(tipo_orgn_nom, "HABITACIONAL") |
+                       str_detect(tipo_orgn_nom, "VIVI") |
+                       str_detect(tipo_orgn_nom, "VIV") ~ 'PR',
+                     
+                     str_detect(tipo_orgn_nom, "SEGURIDAD") ~ 'SG',
+                     
+                     str_detect(tipo_orgn_nom, "OBRAS") |
+                       str_detect(tipo_orgn_nom, "PISTAS") |
+                       str_detect(tipo_orgn_nom, "RIESGOS") |
+                       str_detect(tipo_orgn_nom, "RIESGO") | #
+                       str_detect(tipo_orgn_nom, "PROSERVICIOS") |
+                       str_detect(tipo_orgn_nom, "ASFALTADO") ~ 'OB', 
+                     
+                     str_detect(tipo_orgn_nom, "AGROPECUARIO") |
+                       str_detect(tipo_orgn_nom, "AGROPECUARIA") |
+                       str_detect(tipo_orgn_nom, "AGROP") |
+                       str_detect(tipo_orgn_nom, "AGROSILVES") |
+                       str_detect(tipo_orgn_nom, "AGR") |
+                       str_detect(tipo_orgn_nom, "AGROPAGROSILVES") |
+                       str_detect(tipo_orgn_nom, "MENSAJERA") ~ 'AG',
+                     
+                     str_detect(tipo_orgn_nom, "HERMANDAD") |
+                       str_detect(tipo_orgn_nom, "REFORMADOR") ~ 'RE',
+                     
+                     str_detect(tipo_orgn_nom, "MUJERES") |
+                       str_detect(tipo_orgn_nom, "FEPOMUVES") |
+                       str_detect(tipo_orgn_nom, "CORDIMUVES") |
+                       str_detect(tipo_orgn_nom, "DIRIGENTAS") ~ 'GE',
+                
+                     str_detect(tipo_orgn_nom, "AAHH") |
+                       str_detect(tipo_orgn_nom, "AH") |
+                       str_detect(tipo_orgn_nom, "ASENTAMIENTO") |
+                       str_detect(tipo_orgn_nom, "AMPAAHH") |
+                       str_detect(tipo_orgn_nom, "PPJJ") |
+                       str_detect(tipo_orgn_nom, "AA") |
+                       str_detect(tipo_orgn_nom, "HH") ~ 'AH',
+                     
+                      str_detect(tipo_orgn_nom, "AMP") |
+                       str_detect(tipo_orgn_nom, "AP") |
+                       str_detect(tipo_orgn_nom, "AMPLIACION") |
+                       str_detect(tipo_orgn_nom, "URBANIZACION") |
+                       str_detect(tipo_orgn_nom, "URB") |
+                       str_detect(tipo_orgn_nom, "ST") |
+                       str_detect(tipo_orgn_nom, "SECTOR") |
+                       str_detect(tipo_orgn_nom, "GR") |
+                       str_detect(tipo_orgn_nom, "GRUPO") ~ 'UR',
+                     
+                     str_detect(tipo_orgn_nom, "COMISION") |
+                       str_detect(tipo_orgn_nom, "COOP") |
+                       str_detect(tipo_orgn_nom, "COOPDE") |
+                       str_detect(tipo_orgn_nom, "ORGANIZACION") |
+                       str_detect(tipo_orgn_nom, "DIRECTIVA") |
+                       str_detect(tipo_orgn_nom, "JUNTA") |
+                       str_detect(tipo_orgn_nom, "COMITE") |
+                       str_detect(tipo_orgn_nom, "BRIGADA") |
+                       str_detect(tipo_orgn_nom, "SECRETARIA") |
+                       str_detect(tipo_orgn_nom, "CENTRAL") |
+                       str_detect(tipo_orgn_nom, "ASOC") |
+                       str_detect(tipo_orgn_nom, "ASSOCIACION") |
+                       str_detect(tipo_orgn_nom, "ASOCIAICON") |
+                       str_detect(tipo_orgn_nom, "ASCIAICON") |
+                       str_detect(tipo_orgn_nom, "ASOCIACIAN") |
+                       str_detect(tipo_orgn_nom, "ASOCIACION") |
+                       str_detect(tipo_orgn_nom, "ASOCIACION") |
+                       str_detect(tipo_orgn_nom, "ASPROREP") |
+                       str_detect(tipo_orgn_nom, "CENTRO") |
+                       str_detect(tipo_orgn_nom, "REVISTA") |
+                       str_detect(tipo_orgn_nom, "JUVES") |
+                       str_detect(tipo_orgn_nom, "9696459") |
+                       str_detect(tipo_orgn_nom, "VELASCO") |
+                       str_detect(tipo_orgn_nom, "COMERCIAL") ~ 'OO'))
+     
 ```
 
 
