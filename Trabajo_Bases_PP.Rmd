@@ -408,7 +408,28 @@ PP_FULL1 <- PP_FULL %>%
 
 Vector de prioridades para palabras clave
 ```{r}
-reference_importance <- c("DISCAPACIDAD",
+reference_importance <- c("COMERCIAL",
+                          "ASPROREP",
+                          "BENDICION",
+                          "REVISTA",
+                          "REFORMADOR",
+                          "UPIS",
+                          "APEMIC",
+                          "APEMINAVES",
+                          "APEMIVES",
+                          "APROCUAVES",
+                          "APROSCUAVES",
+                          "APROSCUAVESASOCIACION",
+                          "CORDIMUVES",
+                          "FEPOMUVES",
+                          "JUVES",
+                          "SUTRAMUVES",
+                          "APIMEAVES",
+                          "9696459",
+                          "DICECOA",
+                          "CALIFORNIA",
+                          
+                          "DISCAPACIDAD",
                           "SORDOS",
                           
                           "CULTURAL",
@@ -422,6 +443,9 @@ reference_importance <- c("DISCAPACIDAD",
                           "OSBCOMEDOR",
                           
                           "ADULTO",
+                          "JUBILADOS",
+                          "EDAD",
+                          "TERCERA",
                           
                           "VASO",
                           "VDL",
@@ -433,17 +457,22 @@ reference_importance <- c("DISCAPACIDAD",
                           
                           "MUJERES",
                           "DIRIGENTAS",
+                          "CLOTILDES",
+                          "030MUJERES",
                         
                           
                           "RECICLADORES",
                           "BOMBEROS",
                           "TRANSPORTISTAS",
+                          "TRANSPORTE",
                           "MOTOTAXISTAS",
                           "AUTOMOTRICES",
+                          "CONSTRUCCIVIL",
                           
                           "EMPRESARIOS",
                           "MICROEMPRESARIOS",
                           "INDUSTRIALES",
+                          "ALIMENTARIA",
                           
                           "MERCADO",
                           "COMERCANTES",
@@ -468,6 +497,8 @@ reference_importance <- c("DISCAPACIDAD",
                           "VERDES",
                           "VERDE",
                           "NATURALES",
+                          "SOSTENIBLE",
+                          "ECOLOGIA",
                           
                           "SALUD",
                         
@@ -483,9 +514,11 @@ reference_importance <- c("DISCAPACIDAD",
                           
                           "PROPIETARIOS", 
                           "ADJUDICATARIOS",
+                          "ADJUDICARIOS",
                           "ASOCADJCONJHABPACHACAMAC",
                           "ADJ",
                           "POSECIONARIOS",
+                          "POSESIONARIOS",
                           "ASOC.VIV",
                           "ASOCVIVIENDA",
                           "VIVIENDA",
@@ -500,6 +533,8 @@ reference_importance <- c("DISCAPACIDAD",
                           "ASOCTRABJ",
                           "ASOCTRABAJADORES",
                           "TRABAJADORES",
+                          "TRABAJ",
+                          "TRABJ",
                           
                           "SEGURIDAD",
                           
@@ -512,12 +547,16 @@ reference_importance <- c("DISCAPACIDAD",
                           "AGUA",
                         
                           "AGR", 
-                          "AGROPECUARIO", 
+                          "AGROPECUARIO",
+                          "AGRPECUARIOS",
                           "AGROPECUARIA",
                           "AGROP",
+                          "AGROP18",
                           "AGROSILVES",
                           "AGROPAGROSILVES",
                           "MENSAJERA",
+                          "AGROINDUSTRIAL",
+                          "AGROPAGROWUSSINES",
                           
                           "HERMANDAD",
                           
@@ -554,6 +593,7 @@ reference_importance <- c("DISCAPACIDAD",
                           "DIRECTIVA",
                           "JUNTA",
                           "COMITE",
+                          "COMITA",
                           "BRIGADA",
                           "SECRETARIA",
                           "DIRECTIVA",
@@ -567,30 +607,10 @@ reference_importance <- c("DISCAPACIDAD",
                           "ASOCIACION",
                           "ASOCIACION",
                           
-                    
-                          "COMERCIAL",
+                          
+                          "VELASCO",
                           
                           "CENTRO",
-                          
-                          "ASPROREP",
-                          "VELASCO",
-                          "BENDICION",
-                          "REVISTA",
-                          "REFORMADOR",
-                          "UPIS",
-                          "APEMIC",
-                          "APEMINAVES",
-                          "APEMIVES",
-                          "APROCUAVES",
-                          "APROSCUAVES",
-                          "APROSCUAVESASOCIACION",
-                          "CORDIMUVES",
-                          "FEPOMUVES",
-                          "JUVES",
-                          "SUTRAMUVES",
-                          "APIMEAVES",
-                          "9696459",
-                          "DICECOA",
                           
                           "URB",
                           "URBANIZACION")
@@ -822,28 +842,29 @@ PP_FULL3 <- PP_FULL2 %>%
 PP_FULL2$tipo_orgn_mod = 
   ifelse(PP_FULL2$tipo_orgn_nom  %in% c("DISCAPACIDAD","SORDOS"),"HC",
          ifelse(PP_FULL2$tipo_orgn_nom %in% c("CULTURAL","CULTURA"), "CT",
-                ifelse(PP_FULL2$tipo_orgn_nom == "ADULTO", "SR",
+                ifelse(PP_FULL2$tipo_orgn_nom %in% c("ADULTO","JUBILADOS","EDAD","TERCERA"), "SR",
                        ifelse(PP_FULL2$tipo_orgn_nom == "MUNICIPALIDAD", "MN",
                               ifelse(PP_FULL2$tipo_orgn_nom %in% c("COMEDORES","COMEDOR", "COMEDORSARITA","DICECOA","OSBCOMEDOR"),"CP",
                                      ifelse(PP_FULL2$tipo_orgn_nom %in% c("VASO","VDL"),"VL",
                                             ifelse(PP_FULL2$tipo_orgn_nom %in% c("MADRES","MADRE","MADRESNUESTRO","BENDICION"),"CM",
                                                    ifelse(PP_FULL2$tipo_orgn_nom %in% c("COORDINADORA","COORDINAROA","CORDINADORA","COORDIANDORA"), "CD",
-                                                          ifelse(PP_FULL2$tipo_orgn_nom %in% c("ASOCDE","ASOCTRABJ","TRABAJADORES", "ASOCTRABAJADORES", "RECICLADORES","BOMBEROS","TRANSPORTISTAS","MERCADO","COMERCANTES","MCDO","COMERCIANTES","SUTRAMUVES","MOTOTAXISTAS","AUTOMOTRICES"), "TB",
-                                                                 ifelse(PP_FULL2$tipo_orgn_nom %in% c("EMPRESARIOS","MICROEMPRESARIOS","SAC","EIRL","ESTACIONAMIENTO","APEMIC","APEMIVES","APEMINAVES","APIMEAVES", "INDUSTRIALES"),"EM",
+                                                          ifelse(PP_FULL2$tipo_orgn_nom %in% c("ASOCDE","ASOCTRABJ","TRABAJADORES", "ASOCTRABAJADORES", "RECICLADORES","BOMBEROS","TRANSPORTISTAS","TRANSPORTE","MERCADO","COMERCANTES","MCDO","COMERCIANTES","SUTRAMUVES","MOTOTAXISTAS","AUTOMOTRICES","CONSTRUCCIVIL"), "TB",
+                                                                 ifelse(PP_FULL2$tipo_orgn_nom %in% c("EMPRESARIOS","MICROEMPRESARIOS","SAC","EIRL","ESTACIONAMIENTO","APEMIC","APEMIVES","APEMINAVES","APIMEAVES", "INDUSTRIALES","ALIMENTARIA"),"EM",
                                                                         ifelse(PP_FULL2$tipo_orgn_nom %in% c("EDUCAION","EDUCACION","EDUCATIVO","IE","IEN","IESTP","CETPRO"), "ED",
-                                                                               ifelse(PP_FULL2$tipo_orgn_nom %in% c("AMBIENTE","AMBIENTAL","VERDES","VERDE","NATURALES"),"MA",
+                                                                               ifelse(PP_FULL2$tipo_orgn_nom %in% c("AMBIENTE","AMBIENTAL","VERDES","VERDE","NATURALES","SOSTENIBLE","ECOLOGIA"),"MA",
                                                                                       ifelse(PP_FULL2$tipo_orgn_nom %in% c("APROCUAVES","APROSCUAVES","SALUD","APROSCUAVESASOCIACION"),"SA",
                                                                                              ifelse(PP_FULL2$tipo_orgn_nom %in%
                                                                                                       c("FAMILIAS","FAMILIAR","FAMLFUNDADORES","WASI"), "FA",
                                                                                                     ifelse(PP_FULL2$tipo_orgn_nom %in% c("VECINOS","VECINAL","JJ", "POBLADORES","VECINA","VECINALES","COMUNAL","UPIS"), "VC",
-                                                                                                           ifelse(PP_FULL2$tipo_orgn_nom %in%  c("PROPIETARIOS","ADJUDICATARIOS","ASOCADJCONJHABPACHACAMAC","ADJ","POSECIONARIOS", "POSESIONARIOS","ASOC.VIV","ASOCVIVIENDA","VIVIENDA","ASOCVIV","ASOCVIVISTA","ASOCVIVSTA","HABITACIONAL","VIVI","VIV"), "PR",
+                                                                                                           ifelse(PP_FULL2$tipo_orgn_nom %in%  c("PROPIETARIOS","ADJUDICATARIOS","ADJUDICARIOS","ASOCADJCONJHABPACHACAMAC","ADJ","POSECIONARIOS","POSESIONARIOS"), "PR",
+                                                                                                                  ifelse(PP_FULL2$tipo_orgn_nom %in% c("POSESIONARIOS","ASOC.VIV","ASOCVIVIENDA","VIVIENDA","ASOCVIV","ASOCVIVISTA","ASOCVIVSTA","HABITACIONAL","VIVI","VIV","ASPROREP"), "VV",
                                                                                                                   ifelse(PP_FULL2$tipo_orgn_nom == "SEGURIDAD", "SG", 
                                                                                                                          ifelse(PP_FULL2$tipo_orgn_nom %in% c("OBRAS","PISTAS","RIESGOS","RIESGO","PROSERVICIOS","ASFALTADO","AGUA"), "OB",
-                                                                                                                                ifelse(PP_FULL2$tipo_orgn_nom %in% c("AGROPECUARIO","AGROPECUARIA","AGROP","AGROSILVES","AGR","AGROPAGROSILVES","MENSAJERA"),'AG',
+                                                                                                                                ifelse(PP_FULL2$tipo_orgn_nom %in% c("AGROPECUARIO","AGROPECUARIA","AGROINDUSTRIAL","AGROP","AGROP18","AGROSILVES","AGR","AGROPAGROSILVES","MENSAJERA","AGRPECUARIOS","AGROPAGROWUSSINES","VELASCO"),'AG',
                                                                                                                                        ifelse(PP_FULL2$tipo_orgn_nom %in% c("HERMANDAD","REFORMADOR"), "RE",
-                                                                                                                                              ifelse(PP_FULL2$tipo_orgn_nom %in% c("MUJERES","FEPOMUVES","CORDIMUVES","DIRIGENTAS"), "GE",
+                                                                                                                                              ifelse(PP_FULL2$tipo_orgn_nom %in% c("MUJERES","FEPOMUVES","CORDIMUVES","DIRIGENTAS","CLOTILDES","030MUJERESCOL"), "GE",
                                                                                                                                                      ifelse(PP_FULL2$tipo_orgn_nom %in% c("AAHH","ASENTAMIENTO","AH","AMPAAHH","PPJJ","AA","HH"), "AH",
-                                                                                                                                                            ifelse(PP_FULL2$tipo_orgn_nom %in% c("AMP","AP","AH","AMPLIACION","URBANIZACION","URB","ST","SECTOR","GR","GRUPO"), "UR", "OO")))))))))))))))))))))))
+                                                                                                                                                            ifelse(PP_FULL2$tipo_orgn_nom %in% c("AMP","AP","AH","AMPLIACION","URBANIZACION","URB","ST","SECTOR","GR","GRUPO","CALIFORNIA","DIRECTIVA"), "UR", "OO"))))))))))))))))))))))))
                                                                                                                       
 
 ```
@@ -861,5 +882,17 @@ Juntar filas según etiqueta de organizaciones / tipo de organizaciones en aggre
 ```{r}
 PP_SUBSET[,c(2:6)] <- sapply(PP_SUBSET[c(2:6)],as.numeric)
 Resumen_Tipo_Org<- aggregate(. ~ tipo_orgn_mod, data = PP_SUBSET, sum)
+
+library(janitor)
+Resumen_Tipo_Org <- Resumen_Tipo_Org %>%
+  adorn_totals("row") %>%
+  adorn_totals("col")
+
+Resumen_Tipo_Org <- as.data.frame(Resumen_Tipo_Org)
+Resumen_Tipo_Org$Total[26]<-NA
+
+#CENTRAL (es) modificarlas a mano
+
+
 ```
 
