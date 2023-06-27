@@ -892,7 +892,52 @@ Resumen_Tipo_Org <- as.data.frame(Resumen_Tipo_Org)
 Resumen_Tipo_Org$Total[26]<-NA
 
 #CENTRAL (es) modificarlas a mano
+```
 
+Graficar
+```{r}
+Resumen_Tipo_Org <- as.data.frame(t(Resumen_Tipo_Org))
 
+library(tibble)
+Resumen_Tipo_Org <- tibble::rownames_to_column(Resumen_Tipo_Org, "AÑO")
+
+library(tidyverse)
+library(janitor)
+
+Resumen_Tipo_Org <- Resumen_Tipo_Org %>%
+  row_to_names(row_number = 1)
+
+Resumen_Tipo_Org <- Resumen_Tipo_Org[-c(6),]
+Resumen_Tipo_Org <- Resumen_Tipo_Org[,-c(27)]
+
+library(plotly)
+fig <- plot_ly(Resumen_Tipo_Org, type = 'scatter', mode = 'lines')%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AG, name = 'Variable', line = list(color = 'RGB(247,247,247)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  
+  layout(showlegend = T)
+fig
 ```
 
