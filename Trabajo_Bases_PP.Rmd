@@ -912,10 +912,10 @@ Resumen_Tipo_Org <- Resumen_Tipo_Org[,-c(27)]
 
 library(plotly)
 fig <- plot_ly(Resumen_Tipo_Org, type = 'scatter', mode = 'lines')%>%
-  add_trace(x = ~tipo_orgn_mod, y = ~AG, name = 'Variable', line = list(color = 'RGB(247,247,247)', width = 4))%>%
-  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
-  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
-  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AG, name = 'AG', line = list(color = 'RGB(247,247,247)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'AH', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~CD, name = 'CD', line = list(color = 'RGB(37,37,37)', width = 4))%>%
+  add_trace(x = ~tipo_orgn_mod, y = ~CM, name = 'CM', line = list(color = 'RGB(37,37,37)', width = 4))%>%
   add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
   add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
   add_trace(x = ~tipo_orgn_mod, y = ~AH, name = 'Variable', line = list(color = 'RGB(37,37,37)', width = 4))%>%
