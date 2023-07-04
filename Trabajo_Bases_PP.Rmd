@@ -865,10 +865,26 @@ PP_FULL2$tipo_orgn_mod =
                                                                                                                                               ifelse(PP_FULL2$tipo_orgn_nom %in% c("MUJERES","FEPOMUVES","CORDIMUVES","DIRIGENTAS","CLOTILDES","030MUJERESCOL"), "GE",
                                                                                                                                                      ifelse(PP_FULL2$tipo_orgn_nom %in% c("AAHH","ASENTAMIENTO","AH","AMPAAHH","PPJJ","AA","HH"), "AH",
                                                                                                                                                             ifelse(PP_FULL2$tipo_orgn_nom %in% c("AMP","AP","AH","AMPLIACION","URBANIZACION","URB","ST","SECTOR","GR","GRUPO","CALIFORNIA","DIRECTIVA"), "UR", "OO"))))))))))))))))))))))))
-                                                                                                                      
 
+
+
+PP_FULL2$tipo_orgn_mod[719]<-"CM"
+PP_FULL2$tipo_orgn_mod[726]<-"CM"
+PP_FULL2$tipo_orgn_mod[727]<-"CM"
+PP_FULL2$tipo_orgn_mod[730]<-"CM"
+PP_FULL2$tipo_orgn_mod[737]<-"CM"
+PP_FULL2$tipo_orgn_mod[738]<-"CM"
+PP_FULL2$tipo_orgn_mod[739]<-"CM"
+PP_FULL2$tipo_orgn_mod[740]<-"CM"
+PP_FULL2$tipo_orgn_mod[741]<-"CM"
+PP_FULL2$tipo_orgn_mod[742]<-"CM"
+PP_FULL2$tipo_orgn_mod[743]<-"CM"
+PP_FULL2$tipo_orgn_mod[744]<-"CM"
+PP_FULL2$tipo_orgn_mod[745]<-"CM"
+PP_FULL2$tipo_orgn_mod[746]<-"CM"
+PP_FULL2$tipo_orgn_mod[840]<-"CM"
+PP_FULL2$tipo_orgn_mod[841]<-"CM"
 ```
-
 
 
 
@@ -890,9 +906,6 @@ Resumen_Tipo_Org <- Resumen_Tipo_Org %>%
 
 Resumen_Tipo_Org <- as.data.frame(Resumen_Tipo_Org)
 Resumen_Tipo_Org$Total[26]<-NA
-
-#CENTRAL (es) modificarlas a mano
-
 
 ```
 
