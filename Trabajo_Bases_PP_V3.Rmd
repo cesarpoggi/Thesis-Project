@@ -1,0 +1,1088 @@
+---
+title: "Tesis - Data Preliminar (Con 2023)"
+author: "Cesar Poggi"
+date: "2023-10-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(rio)
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(tidyselect)
+library(tidyr)
+library(tibble)
+```
+
+
+## Limpieza
+
+Objetos con los links de las bases
+```{r}
+PP2015_pag_html <- "https://www.dropbox.com/s/0l8wp5baa2lwqli/agentes_participantes_2015_pagina.csv?dl=1"
+PP2016_pag_html <- "https://www.dropbox.com/s/hijxy0loo02ogsm/agentes_participantes_2016_pagina.csv?dl=1"
+PP2017_pag_html <- "https://www.dropbox.com/s/yiufrwyomg52wfs/agentes_participantes_2017_pagina.csv?dl=1"
+PP2018_pag_html <- "https://www.dropbox.com/s/9gcvp4ylwnds1yu/agentes_participantes_2018_pagina.csv?dl=1"
+PP2020_pag_html <- "https://www.dropbox.com/s/yqkr40yclkp6n1t/agentes_participantes_2020_pagina.csv?dl=1"
+PP2023_pag_html <- "https://www.dropbox.com/scl/fi/x2yucic9b2m9q9idne21t/agentes_participantes_2023_pagina.csv?rlkey=dcmtd0unx987lcaw5zov4a8js&dl=1"
+```
+
+Importación de las bases desde los objetos
+```{r}
+PP2015_pag=import(PP2015_pag_html, encoding = 'UTF-8')
+PP2016_pag=import(PP2016_pag_html, encoding = 'UTF-8')
+PP2017_pag=import(PP2017_pag_html, encoding = 'UTF-8')
+PP2018_pag=import(PP2018_pag_html, encoding = 'UTF-8')
+PP2020_pag=import(PP2020_pag_html, encoding = 'UTF-8')
+PP2023_pag=import(PP2023_pag_html, encoding = 'UTF-8')
+```
+
+Quedarnos con variables elementales
+```{r}
+#list_dfs2 <- lapply(list_dfs, subset, select = c("orgn", "tipo_orgn"))
+#list2env(list_dfs2, .GlobalEnv)
+
+PP2015_pag <- select(PP2015_pag, c("orgn"))
+PP2016_pag <- select(PP2016_pag, c("orgn"))
+PP2017_pag <- select(PP2017_pag, c("orgn"))
+PP2018_pag <- select(PP2018_pag, c("orgn"))
+PP2020_pag <- select(PP2020_pag, c("orgn"))
+PP2023_pag <- select(PP2023_pag, c("orgn"))
+```
+
+
+Añadir variables dicotómicas de año (desde 2015 al 2020) a cada base 
+```{r}
+PP2015_pag$AÑO2015 <- c("1") 
+PP2015_pag$AÑO2016 <- c("0") 
+PP2015_pag$AÑO2017 <- c("0") 
+PP2015_pag$AÑO2018 <- c("0") 
+PP2015_pag$AÑO2020 <- c("0") 
+PP2015_pag$AÑO2023 <- c("0")
+
+PP2016_pag$AÑO2015 <- c("0") 
+PP2016_pag$AÑO2016 <- c("1") 
+PP2016_pag$AÑO2017 <- c("0") 
+PP2016_pag$AÑO2018 <- c("0") 
+PP2016_pag$AÑO2020 <- c("0")
+PP2016_pag$AÑO2023 <- c("0")
+
+PP2017_pag$AÑO2015 <- c("0") 
+PP2017_pag$AÑO2016 <- c("0") 
+PP2017_pag$AÑO2017 <- c("1") 
+PP2017_pag$AÑO2018 <- c("0") 
+PP2017_pag$AÑO2020 <- c("0")
+PP2017_pag$AÑO2023 <- c("0")
+
+PP2018_pag$AÑO2015 <- c("0") 
+PP2018_pag$AÑO2016 <- c("0") 
+PP2018_pag$AÑO2017 <- c("0") 
+PP2018_pag$AÑO2018 <- c("1") 
+PP2018_pag$AÑO2020 <- c("0")
+PP2018_pag$AÑO2023 <- c("0")
+
+PP2020_pag$AÑO2015 <- c("0") 
+PP2020_pag$AÑO2016 <- c("0") 
+PP2020_pag$AÑO2017 <- c("0") 
+PP2020_pag$AÑO2018 <- c("0") 
+PP2020_pag$AÑO2020 <- c("1")
+PP2020_pag$AÑO2023 <- c("0")
+
+PP2023_pag$AÑO2015 <- c("0") 
+PP2023_pag$AÑO2016 <- c("0") 
+PP2023_pag$AÑO2017 <- c("0") 
+PP2023_pag$AÑO2018 <- c("0") 
+PP2023_pag$AÑO2020 <- c("0")
+PP2023_pag$AÑO2023 <- c("1")
+```
+
+
+Cambio de los strings de las variables para no hayan caracteres especiales
+```{r}
+#PP2015_pag$nombre <- iconv(PP2015_pag$nombre, to='ASCII//TRANSLIT')
+#PP2016_pag$nombre <- iconv(PP2016_pag$nombre, to='ASCII//TRANSLIT')
+#PP2017_pag$nombre <- iconv(PP2017_pag$nombre, to='ASCII//TRANSLIT')
+#PP2018_pag$nombre <- iconv(PP2018_pag$nombre, to='ASCII//TRANSLIT')
+#PP2020_pag$nombre <- iconv(PP2020_pag$nombre, to='ASCII//TRANSLIT')
+
+PP2015_pag$orgn <- iconv(PP2015_pag$orgn, to='ASCII//TRANSLIT')
+PP2016_pag$orgn <- iconv(PP2016_pag$orgn, to='ASCII//TRANSLIT')
+PP2017_pag$orgn <- iconv(PP2017_pag$orgn, to='ASCII//TRANSLIT')
+PP2018_pag$orgn <- iconv(PP2018_pag$orgn, to='ASCII//TRANSLIT')
+PP2020_pag$orgn <- iconv(PP2020_pag$orgn, to='ASCII//TRANSLIT')
+PP2023_pag$orgn <- iconv(PP2023_pag$orgn, to='ASCII//TRANSLIT')
+```
+
+Merge de bases
+```{r}
+df_lista <- list(PP2015_pag, PP2016_pag, PP2017_pag, PP2018_pag, PP2020_pag, PP2023_pag)
+
+PP_FULL <- df_lista %>%
+  reduce(full_join)
+```
+
+Reordenar alfabeticamente según nombre de organización
+```{r}
+PP_FULL$index_OG_col <- row.names(PP_FULL)
+PP_FULL$index_OG_col <- as.numeric(PP_FULL$index_OG_col)
+#PP_FULL<-PP_FULL[order(PP_FULL$orgn),]
+```
+
+Solo quedarnos con caracteres alfanuméricos y espacios
+```{r}
+PP_FULL$orgn <- gsub("[^[:alnum:][:space:]]","",PP_FULL$orgn)
+```
+
+
+
+
+
+
+
+Poner etiqueda a cada organización manualmente [PAUSA MOMENTÁNEA]
+```{r, eval=FALSE}
+#Para Asentamiento Humano poner [AH] antes del número que representa una unidad
+#Para Asociación de Propietarios [AP] antes del número que representa una unidad
+#Para Vaso de Leche [VL] antes del número que representa una unidad
+#Para Grupos sobre Medio Ambiente [MA] antes del número que representa esta unidad
+#Para Grupos sobre Discapacidad [HC] antes del número que representa esta unidad
+#Para Club de Madres [CM] antes del número que representa esta unidadantes de 
+#Para Otro Tipo de Org. [OR] antes del número que representa una unidad
+#Para Urbanizaciones [UB] antes del número que representa una unidad
+#Para Grupos de Familias y/o Vecinos [FV] antes del número que representa una unidad
+#Para Grupos Adulto Mayor [SR] antes del número que representa una unidad
+#Para grupos Agropecuarios [AG] antes del número que representa una unidad
+#Para grupos Empresarios [EP] antes del número que representa una unidad
+
+
+PP_FULL1 <- PP_FULL %>%
+  mutate(
+    orgn_mod = case_when(index_OG_col == 2040 | index_OG_col == 2041 | index_OG_col == 2503 | index_OG_col == 2625 ~ "AH001.0", #Asentamiento 1ro de Mayo
+                         
+                         index_OG_col == 1586 | index_OG_col == 1828 | index_OG_col == 2719 | index_OG_col == 2774 | index_OG_col == 2767 | index_OG_col == 2786 ~ "AH002.0", #Asentamiento Oasis de Villa General diferentes grupos y sectores
+                         
+                         index_OG_col == 391 | index_OG_col == 392 | index_OG_col == 877 | index_OG_col == 878 | index_OG_col == 869 | index_OG_col == 870 | index_OG_col == 445 | index_OG_col == 446 ~ "AH002.1", #Asentamiento Oasis de Villa Junta Directiva Central
+                         
+                         index_OG_col == 2707 | index_OG_col == 2714 | index_OG_col == 1561 | index_OG_col == 1844 | index_OG_col == 2692 | index_OG_col == 2800 ~ "FV002.0", #Asentamiento Oasis de Villa Asociaciones/Organización de Familias
+                         
+                         index_OG_col == 1414 | index_OG_col == 1661 ~ "AH003.0", #Asentamiento Lomas de Mamacona Junta Directiva
+                          
+                         index_OG_col == 2166 | index_OG_col == 2167 | index_OG_col == 2649 | index_OG_col == 2671 ~ "AH003.1", #Asentamiento Lomas de Mamacona diferentes grupos y sectores
+                         
+                         index_OG_col == 17 | index_OG_col == 18 | index_OG_col == 1841 | index_OG_col == 1842 | index_OG_col == 1036 | index_OG_col == 1037 ~ "AH004.0", #Asentamiento Laureles
+                         
+                         index_OG_col == 2150 | index_OG_col == 2151 ~ "AH005.0", #Asentamiento Jardines de Pachacamac
+                         
+                         index_OG_col == 2679 | index_OG_col == 21 | index_OG_col == 22 | index_OG_col == 1050 | index_OG_col == 1051 | index_OG_col == 2172 | index_OG_col == 2173 | index_OG_col == 2661 | index_OG_col == 2673 | index_OG_col == 39 | index_OG_col == 40 | index_OG_col == 1084 | index_OG_col == 1085 | index_OG_col == 2648 ~ "AH006.0", #Asentamiento Principe de Asturias diferentes grupos y sectores
+                         
+                         index_OG_col == 1550 | index_OG_col == 1840 ~ "AH006.1", #Asentamiento Principe de Asturias Junta Directiva
+                         
+                         index_OG_col == 1417 | index_OG_col == 1765 ~ "AH007.0", #Asentamiento Valle de Jesús
+                         
+                         index_OG_col == 2146 | index_OG_col == 2147 | index_OG_col == 3 | index_OG_col == 4 | index_OG_col == 1058 | index_OG_col == 1059 | index_OG_col == 2646 | index_OG_col == 2684 ~ "AH008.0", #Asentamiento Villa del Mar
+                
+                         index_OG_col == 1421 | index_OG_col == 1786 ~ "AH008.1", #Asentamiento Villa del Mar Junta Directiva
+                         
+                         index_OG_col == 328 | index_OG_col == 329 | index_OG_col == 1365 | index_OG_col == 1366  ~ "VL008.0", #Vaso de Leche Villa del Mar Comité
+                         
+                         index_OG_col == 1510 | index_OG_col == 1511 | index_OG_col == 2871 | index_OG_col == 2917 | index_OG_col == 2848 | index_OG_col == 2870  ~ "VL008.1", #Vaso de Leche Villa del Mar Vaso de Leche
+                         
+                         index_OG_col == 2308  ~ "OR008.0", #Comite de Org. de Obras Villa del Mar
+                         
+                         index_OG_col == 1428 | index_OG_col == 1654 ~ "OR008.1", #Asociación de Vivienda Villa del Mar
+                         
+                         index_OG_col == 2286 | index_OG_col == 2287 ~ "AP008.0", #Asociación de Propietarios de Villa del Mar
+                         
+                         index_OG_col == 2154 | index_OG_col == 2155 | index_OG_col == 1100 ~ "AH009.0", #Asentamiento Humano Virgen de la Candelaria
+                         
+                         index_OG_col == 2637 | index_OG_col == 2665 | index_OG_col == 27 | index_OG_col == 28 | index_OG_col == 1074 | index_OG_col == 1075 ~ "AH010.0", #Asentamiento Humano Villa Union
+                         
+                         index_OG_col == 1 | index_OG_col == 2 | index_OG_col == 1299 | index_OG_col == 1300 | index_OG_col == 2298 | index_OG_col == 2299 ~ "OR011.0", #Asociación de pobladores el Buen Samaritano
+                         
+                         index_OG_col == 5 | index_OG_col == 6 ~ "AH012.0", #Asentamiento Humano 11 de Dic
+                         
+                         index_OG_col == 858 | index_OG_col == 859 ~ "AH012.1", #Junta Directiva del Asentamiento Humano 11 de Dic
+                         
+                         index_OG_col == 1064 | index_OG_col == 1065 | index_OG_col == 15 | index_OG_col == 16 ~ "AH013.0", #Asentamiento Humano Brisas de Pachacamac
+                         
+                         index_OG_col == 2161 ~ "AH013.1", #Comité de Gestión de Obras Asentamiento Humano Brisas de Pachacamac
+                         
+                         index_OG_col == 7 | index_OG_col == 8 | index_OG_col == 1068 | index_OG_col == 1069 | index_OG_col == 19 | index_OG_col == 20 | index_OG_col == 1029 | index_OG_col == 1030 | index_OG_col == 2630 | index_OG_col == 2652 ~ "AH014.0", #Asentamiento Humano Amp. Max Uhle
+                         
+                         index_OG_col == 2334 | index_OG_col == 2416 ~ "CP014.0", #Comedor Popular del Asentamiento Humano Amp. Max Uhle
+                         
+                         index_OG_col == 9 | index_OG_col == 10 | index_OG_col == 2722 | index_OG_col == 2751 ~ "AH015.0", #Asentamiento Humano Edilberto Ramos
+                         
+                         index_OG_col == 389 | index_OG_col == 390 | index_OG_col == 885 | index_OG_col == 887 | index_OG_col == 889 | index_OG_col == 890 | index_OG_col == 891 | index_OG_col == 880 | index_OG_col == 881 | index_OG_col == 489 | index_OG_col == 490 | index_OG_col == 882 | index_OG_col == 884 ~ "AH015.1", #Junta Directiva del Asentamiento Humano Amp. Max Uhle
+                         
+                         index_OG_col == 867 | index_OG_col == 868 ~ "MA015.1", #Comité Medio Ambiente JD Edilberto Ramos
+                         
+                         index_OG_col == 11 | index_OG_col == 12 | index_OG_col == 1062 | index_OG_col == 1063 | index_OG_col == 1411 | index_OG_col == 1412 | index_OG_col == 2627 | index_OG_col == 2676 ~ "AH016.0", #Asentamiento Heroes del Cenepa
+                         
+                         index_OG_col == 2174 | index_OG_col == 2175 ~ "AH016.1", #Junta Directiva Heroes del Cenepa
+                         
+                         index_OG_col == 2178 | index_OG_col == 2179 | index_OG_col == 2653 | index_OG_col == 2677 ~ "CP016.0", #Comedor Popular Heroes del Cenepa
+                         
+                         index_OG_col == 13 | index_OG_col == 14 | index_OG_col == 1990 | index_OG_col == 1991 | index_OG_col == 1215 | index_OG_col == 1217 | index_OG_col == 1171 | index_OG_col == 1173 | index_OG_col == 2392 | index_OG_col == 2451  ~ "FV017.0", #Asentamiento Humano Hijos de Villa/Asociación de Familias
+                         
+                         index_OG_col == 1581 | index_OG_col == 1862 ~ "AH017.1", #Junta Directiva Asentamiento Humano Hijos de Villa
+                         
+                         index_OG_col == 1208 | index_OG_col == 1211 | index_OG_col == 1224 | index_OG_col == 1227 | index_OG_col == 1969 | index_OG_col == 1970 | index_OG_col == 2716 | index_OG_col == 2717 | index_OG_col == 2346 | index_OG_col == 2386  ~ "CM017.0", #Club de Madres Virgen de las Mercedes - Asentamiento Humano Hijos de Villa
+                         
+                         
+                         index_OG_col == 1455 | index_OG_col == 1681 | index_OG_col == 1965 | index_OG_col == 1966 ~ "AH018.0", #Asentamiento Humano Las Praderas de Villa
+                         
+                         index_OG_col == 1229 | index_OG_col == 1230 | index_OG_col == 447 | index_OG_col == 448 ~ "AH018.1", #Asentamiento Humano Las Praderas de Villa Junta Directiva
+                         
+                         index_OG_col == 23 | index_OG_col == 24 | index_OG_col == 1060 | index_OG_col == 1061 ~ "AH019.0", #Asentamiento Humano Señor de los Milagros
+                         
+                         index_OG_col == 2638 | index_OG_col == 2643 ~ "AH020.0", #Asentamiento Humano Victor CHero Ramos
+                         
+                         index_OG_col == 1471 | index_OG_col == 1552 ~ "AH020.1", #Seguridad Ciudadana Asentamiento Humano Victor Chero Ramos
+                         
+                         index_OG_col == 25 | index_OG_col == 26 | index_OG_col == 1086 | index_OG_col == 1087 ~ "VL020.0", #Vaso de Leche Asentamiento Humano Victor Chero Ramos
+                         
+                         index_OG_col == 1759 | index_OG_col == 2156 | index_OG_col == 2157 | index_OG_col == 2644 | index_OG_col == 2672 | index_OG_col == 1555 | index_OG_col == 1766  ~ "UB021.0", #Urb. Pachacamac - Centrales
+                         
+                         index_OG_col == 2655 | index_OG_col == 2662 | index_OG_col == 2140 | index_OG_col == 2141 ~ "UB021.1", #Urb. Pachacamac - Junta Directiva
+                         
+                         index_OG_col == 2651 | index_OG_col == 2663 ~ "HC021.0", #Urb. Pachacamac - Grupo de Personas con discapacidad
+                         
+                         index_OG_col == 73 | index_OG_col == 72 | index_OG_col == 1056 | index_OG_col == 1057 | index_OG_col == 664 | index_OG_col == 1057 | index_OG_col == 2148 ~ "AP021.0", #Urb. Pachacamac - Asociación de propietarios
+                         
+                         index_OG_col == 1031 | index_OG_col == 1032 | index_OG_col == 2148 | index_OG_col == 2149 ~ "AP021.1", #Urb. Pachacamac - Asociacion de Adjudicatarios COnjunto Habitacional Sextor 1 Barrio 2
+                         
+                         index_OG_col == 663 | index_OG_col == 1763 | index_OG_col == 1764 | index_OG_col == 1090 | index_OG_col == 82 | index_OG_col == 83 ~ "AP021.2", #Adjudicatarios agrupamiento Residencial
+                         
+                         index_OG_col == 2170 | index_OG_col == 2171 | index_OG_col == 1762 | index_OG_col == 1882 | index_OG_col == 1021 | index_OG_col == 1022 | index_OG_col == 609 | index_OG_col == 610 ~ "OR021.0", #Urb. Pachacamac - Comites Integales
+                         
+                         index_OG_col == 2629 | index_OG_col == 2658 ~ "OR021.1", #Urb. Pachacamac - Comite de Obras
+                         
+                         index_OG_col == 2181 | index_OG_col == 2182 ~ "FV021.0", #Urb. Pachacamac - Comite Vecinal
+                         
+                         index_OG_col == 2626 | index_OG_col == 2632 ~ "FV021.1", #Urb. Pachacamac - Comite Vecinal
+                         
+                         index_OG_col == 1413 | index_OG_col == 1545 ~ "OR021.2", #Urb. Pachacamac - Conjunto Habitacional 8 de Febrero
+                         
+                         index_OG_col == 2138 | index_OG_col == 2139 ~ "OR021.3", #Urb. Pachacamac - Conjunto Habitacional 8 de Febrero
+                         
+                         index_OG_col == 90 | index_OG_col == 91 | index_OG_col == 1040 | index_OG_col == 1041 ~ "OR021.4", #Urb. Pachacamac - Asociacion de Trabajo de Construcción Civil
+                         
+                         index_OG_col == 2639 | index_OG_col == 2660 ~ "MA021.0", #Urb. Pachacamac - Comite de Medio Ambiente y Obras
+                         
+                         index_OG_col == 2633 | index_OG_col == 2685 ~ "CM021.0", #Urb. Pachacamac - Club de Madres Santa Ana
+                         
+                         index_OG_col == 2634 | index_OG_col == 2683 ~ "AH021.0", #Urb. Pachacamac - Asentamiento Humano
+                         
+                         index_OG_col == 2747 | index_OG_col == 2763 ~ "AH022.0", #Asentamiento Humano Mirador de Villa 200 Millas
+                         
+                         index_OG_col == 2704 | index_OG_col == 2802 ~ "AH023.0", #Asentamiento Humano San Ignacio de Loyola - Lomo de Corvina
+                         
+                         index_OG_col == 2856 | index_OG_col == 2875 | index_OG_col == 1313 | index_OG_col == 1314 ~ "AG023.0", #Asociacion Agropecuaria AGROSILVES (San Isidro Labrador) - Lomo de Corvina
+                         
+                         index_OG_col == 1480 | index_OG_col == 1481 | index_OG_col == 2230 | index_OG_col == 2231 | index_OG_col == 1329 | index_OG_col == 1382 ~ "FV023.0", #Juntas Vecinales AGROSILVES - Lomo de Corvina
+                         
+                         index_OG_col == 2865 | index_OG_col == 2904 ~ "OR023.0", #Comite de obra pro servicios AGROSILVES - Lomo de Corvina
+                         
+                         index_OG_col == 2248 | index_OG_col == 2249 | index_OG_col == 1426 | index_OG_col == 1427 ~ "OR023.1", #Comite Obras Asociaciones de Vivienda - Lomo de Corvina
+                         
+                         index_OG_col == 1373 | index_OG_col == 1374 ~ "OR023.2", #Comite Gestión Agua y Alcantarillado Perccanacuy - Lomo de Corvina
+                         
+                         index_OG_col == 1328 | index_OG_col == 143 | index_OG_col == 144 | index_OG_col == 1327 ~ "OR023.3", #Central de Instituciones AGROSILVES
+                         
+                         index_OG_col == 2843 | index_OG_col == 2857 ~ "AP023.0", #Asociación de Posecionarios (Propietarios) de AGROSILVES
+                         
+                         index_OG_col == 64 | index_OG_col == 65 ~ "AG023.1", #Asociacion Agropecuaria Tres Regiones - Lomo de Corvina
+                         
+                         index_OG_col == 1807 | index_OG_col == 1808 | index_OG_col == 2290 | index_OG_col == 2291 | index_OG_col == 2879 | index_OG_col == 2913 | index_OG_col == 108 | index_OG_col == 109 | index_OG_col == 1320 | index_OG_col == 1321 ~ "AG023.2", #Asociacion Chacrita Cajamarquina - Lomo de Corvina
+                         
+                         index_OG_col == 2877 | index_OG_col == 2907 | index_OG_col == 62 | index_OG_col == 63 | index_OG_col == 1326 | index_OG_col == 2234 | index_OG_col == 2235 ~ "AG023.3", #Asociacion Agropecuaria Las Lomas - Lomo de Corvina
+                         
+                         index_OG_col == 2925 | index_OG_col == 2926 ~ "AG023.4", #Asociacion Agropecuaria Tres de Mayo - Lomo de Corvina
+                         
+                         index_OG_col == 2831 | index_OG_col == 2896 | index_OG_col == 409 | index_OG_col == 410 | index_OG_col == 1212 | index_OG_col == 1213 ~ "AG023.5", #Asociacion Agropecuaria Juan Velazco Alvarado - Lomo de Corvina
+                         
+                         index_OG_col == 1716 | index_OG_col == 1877 | index_OG_col == 2044 | index_OG_col == 2045 | index_OG_col == 2463 | index_OG_col == 2549 ~ "MA023.5", #Comité Ambiental Asociacion Agropecuaria Juan Velazco Alvarado - Lomo de Corvina
+                         
+                         index_OG_col == 687 | index_OG_col == 688 | index_OG_col == 188 | index_OG_col == 189 | index_OG_col == 1610 | index_OG_col == 1747 | index_OG_col == 2506 | index_OG_col == 2552 | index_OG_col == 2337 | index_OG_col == 2394 ~ "SR023.5", #Club Adulto Mayor Juan Velazco Alvarado - Lomo de Corvina
+                         
+                         index_OG_col == 1483 | index_OG_col == 1803 | index_OG_col == 1322 | index_OG_col == 1323 | index_OG_col == 449 | index_OG_col == 450 | index_OG_col == 1503 | index_OG_col == 1543 ~ "AG023.5.1", #Asociacion Agropecuaria Juan Velazco Alvarado/Junta directiva - Lomo de Corvina
+                         
+                         index_OG_col == 135 | index_OG_col == 136 ~ "AG023.6", #Asociacion Agropecuaria Und. - Lomo de Corvina
+                         
+                         index_OG_col == 1153 | index_OG_col == 1156 ~ "AH024.0", #Asentamiento Humano Villa Victoria
+                         
+                         index_OG_col == 29 | index_OG_col == 30 | index_OG_col == 1139 | index_OG_col == 1140 | index_OG_col == 1988 | index_OG_col == 1989 ~ "SR025.0", #Club Adulto Mayor Semilla de Santa Rosa
+                         
+                         index_OG_col == 31 | index_OG_col == 32 | index_OG_col == 671 | index_OG_col == 672 | index_OG_col == 2100 | index_OG_col == 2101 | index_OG_col == 1734 | index_OG_col == 1838 | index_OG_col == 2486 | index_OG_col == 2491 ~ "SR026.0", #Club Adulto Mayor Guillermo Burneo
+                         
+                         index_OG_col == 1048 | index_OG_col == 1049 | index_OG_col == 37 | index_OG_col == 38 | index_OG_col == 33 | index_OG_col == 34 | index_OG_col == 1017 | index_OG_col == 1018 | index_OG_col == 2144 | index_OG_col == 2145 | index_OG_col == 2669 | index_OG_col == 2682 ~ "UR027.0", #Ampliación Aires de Pachacamac
+                         
+                         index_OG_col == 1407 | index_OG_col == 1408 ~ "VL027.0", #Vaso de Leche Ampliación Aires de Pachacamac
+                         
+                         index_OG_col == 35 | index_OG_col == 36 | index_OG_col == 1297 | index_OG_col == 1298 | index_OG_col == 2254 | index_OG_col == 2255 | index_OG_col == 1621 | index_OG_col == 1809 | index_OG_col == 1433 | index_OG_col == 1647 ~ "FV028.0", #Agrupación Familiar Fundadores Wasiwasi
+                        
+                         index_OG_col == 43 | index_OG_col == 44 ~ "UR029.0", #Ampliacion Sector 09 Grupo 06
+                         
+                         index_OG_col == 852 | index_OG_col == 854 ~ "UR029.0.1", #Ampliacion Sector 09 Grupo 06 - Junta Directiva
+                         
+                         index_OG_col == 2733 | index_OG_col == 2818 ~ "UR029.1", #Sector 9 Grupo 3(A)
+                         index_OG_col == 835 | index_OG_col == 836 ~ "OR029.1", #Sector 9 Grupo 3 - Comité de Gestión
+                         
+                         index_OG_col == 837 | index_OG_col == 838 | index_OG_col == 827 | index_OG_col == 828 ~ "UR029.1.1", #Sector 9 Grupo 3 - Junta Directiva Central
+                         
+                         index_OG_col == 830 | index_OG_col == 831 | index_OG_col == 2711 | index_OG_col == 2815 ~ "UR029.2.1", #Sector 9 Grupo 1 - Junta Directiva Central
+                         
+                         index_OG_col == 832 | index_OG_col == 666 ~ "UR29.3.1", #Sector 9 Grupo 2 - Junta Directiva Central
+                         
+                         index_OG_col == 2695 | index_OG_col == 2826 ~ "UR029.4.1", #Sector 9 Grupo 4 - Junta Directiva Central
+                         
+                         index_OG_col == 2467 | index_OG_col == 2577 ~ "UR030.0.1", #Sector 3 Grupo 9 - Central
+                         
+                         index_OG_col == 1547 | index_OG_col == 1880 | index_OG_col == 807 | index_OG_col == 808 ~ "UR030.1", #Sector 3 Grupo 11 - Junta Directiva Central
+                         
+                         index_OG_col == 812 | index_OG_col == 813 ~ "UR030.1.1", #Sector 3 Grupo 12 - Junta Directiva Central
+                         
+                         index_OG_col == 2484 | index_OG_col == 2565 | index_OG_col == 839 | index_OG_col == 843 ~ "UR030.3.1", #Sector 3 Grupo 13 - Junta Directiva Central
+                         
+                         index_OG_col == 2528 | index_OG_col == 2536 | index_OG_col == 2527 | index_OG_col == 2606 | index_OG_col == 1507 | index_OG_col == 1508 | index_OG_col == 849 | index_OG_col == 853 | index_OG_col == 856 ~ "UR030.4.1", #Sector 3 Grupo 14 - Junta Directiva Central (varias)
+                         
+                         index_OG_col == 863 | index_OG_col == 866 | index_OG_col == 1549 | index_OG_col == 1823 ~ "UR030.5.1", #Sector 3 Grupo 15 - Junta Directiva Central
+                         
+                         index_OG_col == 395 | index_OG_col == 396 | index_OG_col == 871 | index_OG_col == 875 ~ "UR030.6.1", #Sector 3 Grupo 16 - Junta Directiva Central
+                         
+                         index_OG_col == 879 | index_OG_col == 883 ~ "UR030.7.1", #Sector 3 Grupo 17 - Junta Directiva Central
+                         
+                         index_OG_col == 896 | index_OG_col == 898 ~ "UR030.8.1", #Sector 3 Grupo 18 - Junta Directiva Central
+                         
+                         index_OG_col == 397 | index_OG_col == 398 | index_OG_col == 915 | index_OG_col == 918 ~ "UR030.9.1", #Sector 3 Grupo 21 - Junta Directiva Central
+                         
+                         index_OG_col == 2090 | index_OG_col == 2093 | index_OG_col == 921 | index_OG_col == 924 | index_OG_col == 950 | index_OG_col == 951 ~ "UR030.10.1", #Sector 3 Grupo 22 - Junta Directiva Central (varias)
+                         
+                         index_OG_col == 662 ~ "OR030.11", #Sector 3 Grupo 23 - Comité de gestión de obras
+                         
+                         index_OG_col == 967 | index_OG_col == 968 ~ "UR030.12.1", #Sector 3 Grupo 24 - Junta directiva central
+                         
+                         index_OG_col == 971 | index_OG_col == 972 | index_OG_col == 975 | index_OG_col == 976 ~ "UR030.13.1", #Sector 3 Grupo 25 - Junta directiva central
+                         
+                         index_OG_col == 977 | index_OG_col == 978 | index_OG_col == 979 | index_OG_col == 980 ~ "UR030.14.1", #Sector 3 Grupo 27 - Junta directiva central
+                         
+                         index_OG_col == 981 | index_OG_col == 982 ~ "OR030.14.1", #Sector 3 Grupo 27 - Brigada Cívica de Seguridad Ciudadana
+                         
+                         index_OG_col == 985 | index_OG_col == 986 ~ "UR030.15.1", #Sector 3 Grupo 28 - Junta directiva central
+                         
+                         index_OG_col == 983 | index_OG_col == 984 ~ "SR030.15", #Sector 3 Grupo 28 - ASOCIACION DISTRITAL DEL ADULTO MAYOR CRISTO EL SALVADOR
+                         
+                         index_OG_col == 987 | index_OG_col == 988 ~ "AH030.16.1", #Sector 3 Grupo 29 - Asentamiento Humano 1ro de Mayo - Junta Directiva central
+                         
+                         index_OG_col == 2517 | index_OG_col == 2525 | index_OG_col == 41 | index_OG_col == 42 ~ "UR030.16", #Sector 3 Grupo 31 - Ampliación del grupo
+                         
+                         index_OG_col == 993 | index_OG_col == 994 ~ "OR030.16", #Sector 3 Grupo 31 - Asentamiento Humano 1ro de Mayo - Asociacion de Impedidos Nueva Era
+                         
+                         index_OG_col == 693 | index_OG_col == 694 | index_OG_col == 2067 | index_OG_col == 2068 ~ "EP031.0", #Asociación de (Micro)Empresarios Villa 2000
+                         
+                         index_OG_col == 45 | index_OG_col == 46 | index_OG_col == 1196 | index_OG_col == 1197 ~ "OR032.0", #APAFA IE 7072
+                         
+                         index_OG_col == 1163 | index_OG_col == 1169 ~ "OR032.0", #APAFA IE 7072
+                         index_OG_col == 493 | index_OG_col == 494 | index_OG_col == 1001 | index_OG_col == 1002 | index_OG_col == 1005 ~ "UR033.0.1", #Sector 1 grupo 1 - Junta Directiva
+                         
+                         index_OG_col == 2380 | index_OG_col == 2438 ~ "SR034.0", #Sector 1 grupo 7 - Club Adulto Mayor Fundadores
+                         
+                         index_OG_col == 2355 | index_OG_col == 2367 ~ "UR034.0.1", #Sector 1 grupo 7 - Junta Directiva
+                         
+                         index_OG_col == 1941 | index_OG_col == 1942 | index_OG_col == 758 | index_OG_col == 2393 | index_OG_col == 2432 | index_OG_col == 593 | index_OG_col == 594 | index_OG_col == 1155 | index_OG_col == 1157 | index_OG_col == 1695 | index_OG_col == 1830 ~ "CM034.0", #Sector 1 grupo 7 - Club de Madres Virgen de Fatima 2
+                         
+                         index_OG_col == 1695 | index_OG_col == 1830 ~ "CM034.0", #Sector 1 grupo 7 - Club de Madres Virgen de Fatima 2
+                         
+                         index_OG_col == 1160 | index_OG_col == 1161 ~ "UR035.0.1", #Sector 1 grupo 9 - Junta Directiva
+                         
+                         index_OG_col == 1936 | index_OG_col == 1938 ~ "UR035.0", #Sector 1 grupo 10
+                         
+                         index_OG_col == 1818 | index_OG_col == 1861 ~ "UR035.0.1", #Sector 1 grupo 10 - Junta Directiva
+                         
+                         index_OG_col == 1936 | index_OG_col == 1938 ~ "UR035.0", #Sector 1 grupo 10
+                         
+                         index_OG_col == 501 | index_OG_col == 502 | index_OG_col == 660  ~ "UR036.0.1", #Sector 1 grupo 11 - Junta Directiva
+                         
+                         index_OG_col == 2406 | index_OG_col == 2381  ~ "CM037.0", #Sector 1 grupo 12 - Club de Madres Nuestro Porvenir
+                         
+                         
+                         
+        
+                         ))
+
+```
+
+
+
+
+
+
+Vector de prioridades para palabras clave
+```{r}
+reference_importance <- c("COMERCIAL",
+                          "ASPROREP",
+                          "BENDICION",
+                          "REVISTA",
+                          "REFORMADOR",
+                          "UPIS",
+                          "APEMIC",
+                          "APEMINAVES",
+                          "APEMIVES",
+                          "APROCUAVES",
+                          "APROSCUAVES",
+                          "APROSCUAVESASOCIACION",
+                          "CORDIMUVES",
+                          "FEPOMUVES",
+                          "JUVES",
+                          "SUTRAMUVES",
+                          "APIMEAVES",
+                          "APEMICOVES",
+                          "9696459",
+                          "DICECOA",
+                          "3ACOMUNIDAD",
+                          "CONAFOVICER",
+                          "PVL",
+                          "VASO",
+                          "VDL",
+                          
+                          "DISCAPACIDAD",
+                          "SORDOS",
+                          
+                          "CULTURAL",
+                          "CULTURA",
+                          
+                          "MUNICIPALIDAD",
+                          
+                          "COMEDOR",
+                          "COMEDORES",
+                          "COMEDORSARITA",
+                          "OSBCOMEDOR",
+                          "4968",
+                          
+                          "ADULTO",
+                          "JUBILADOS",
+                          "EDAD",
+                          "TERCERA",
+                          
+                          
+                          "MADRES",
+                          "MADRE",
+                          "MADRESNUESTRO",
+                          
+                          
+                          "MUJERES",
+                          "DIRIGENTAS",
+                          "CLOTILDES",
+                          "030MUJERES",
+                        
+                          
+                          "RECICLADORES",
+                          "BOMBEROS",
+                          "TRANSPORTISTAS",
+                          "TRANSPORTE",
+                          "MOTOTAXISTAS",
+                          "AUTOMOTRICES",
+                          "CONSTRUCCIVIL",
+                          
+                          "EMPRESARIOS",
+                          "MICROEMPRESARIOS",
+                          "INDUSTRIALES",
+                          "ALIMENTARIA",
+                          
+                          "MERCADO",
+                          "COMERCANTES",
+                          "MCDO",
+                          "COMERCIANTES",
+                          
+                          
+                          "SAC",
+                          "EIRL",
+                          "ESTACIONAMIENTO",
+                          
+                          "EDUCAION",
+                          "EDUCACION",
+                          "EDUCATIVO",
+                          "IE",
+                          "IEN",
+                          "IESTP",
+                          "CETPRO",
+                          "ESCOLARIZADO",
+                          "GOTITAS",
+                          
+                          "AMBIENTE",
+                          "AMBIENTAL",
+                          "VERDES",
+                          "VERDE",
+                          "NATURALES",
+                          "SOSTENIBLE",
+                          "ECOLOGIA",
+                          
+                          "SALUD",
+                        
+                          "SEGURIDAD",
+                          "SEG",
+                          
+                          "VECINOS",
+                          "VECINAL",
+                          "Vecinal",
+                          "JJ",
+                          "POBLADORES",
+                          "VECINA",
+                          "VECINALES",
+                          "COMUNAL",
+                          
+                          
+                          "PROPIETARIOS", 
+                          "ADJUDICATARIOS",
+                          "ADJUDICARIOS",
+                          "ASOCADJCONJHABPACHACAMAC",
+                          "ADJ",
+                          "POSECIONARIOS",
+                          "POSESIONARIOS",
+                          "ASOC.VIV",
+                          "ASOCVIVIENDA",
+                          "VIVIENDA",
+                          "ASOCVIV",
+                          "ASOCVIVISTA",
+                          "ASOCVIVSTA",
+                          "HABITACIONAL",
+                          "VIVI",
+                          "VIV",
+                          
+                          "ASOCDE",
+                          "ASOCTRABJ",
+                          "ASOCTRABAJADORES",
+                          "TRABAJADORES",
+                          "TRABAJ",
+                          "TRABJ",
+                          
+                          
+                          "OBRAS",
+                          "PISTAS",
+                          "RIESGOS",
+                          "RIESGO",
+                          "PROSERVICIOS",
+                          "ASFALTADO",
+                          "AGUA",
+                        
+                          "AGR", 
+                          "AGROPECUARIO",
+                          "AGRPECUARIOS",
+                          "AGROPECUARIA",
+                          "AGROP",
+                          "AGROP18",
+                          "AGROSILVES",
+                          "AGROPAGROSILVES",
+                          "MENSAJERA",
+                          "AGROINDUSTRIAL",
+                          "AGROPAGROWUSSINES",
+                          
+                          "HERMANDAD",
+                          
+                          "AAHH",
+                          "AH",
+                          "AA",
+                          "HH",
+                          "ASENTAMIENTO",
+                          "AMPAAHH",
+                          "PPJJ",
+                          "PUEBLO",
+                          
+                          "FAMILIAS", 
+                          "FAMILIAR",
+                          "FAMLFUNDADORES",
+                          "WASI",
+                          
+                          "COORDINADORA",
+                          "COORDINAROA",
+                          "CORDINADORA",
+                          "COORDIANDORA",
+                          
+                          "AMP",
+                          "AP",
+                          "AMPLIACION",
+                          "ST",
+                          "SECTOR",
+                          "GR",
+                          "GRUPO",
+                          "Grupo",
+                        
+                          "COMISION",
+                          "COOP",
+                          "COOPDE",
+                          "ORGANIZACION",
+                          "DIRECTIVA",
+                          "JUNTA",
+                          "COMITE",
+                          "COMITA",
+                          "BRIGADA",
+                          "SECRETARIA",
+                          "DIRECTIVA",
+                          "CENTRAL",
+                          
+                          "ASOC",
+                          "ASSOCIACION",
+                          "ASOCIAICON",
+                          "ASCIAICON",
+                          "ASOCIACIAN",
+                          "ASOCIACION",
+                          "ASOCIACION",
+                          
+                          
+                          "VELASCO",
+                          "CALIFORNIA",
+                          "AMAZONAS",
+                          "NINOS",
+                          "NATIVIDAD",
+                          
+                          "CENTRO",
+                          
+                          "URB",
+                          "URBANIZACION")
+```
+
+
+Deconstrucción de filas para separar palabras, identificar las palabras claves y quedarnos con las más relevantes
+```{r}
+#PP_FULL0 <- PP_FULL %>%
+#  rowid_to_column() %>%
+#    separate_rows(orgn, sep = " ")%>%
+#    group_by(rowid) %>%
+#    slice_min(match(orgn, reference_importance)) %>%
+#  rename(tipo_orgn_nom = orgn) %>%
+#  select(tipo_orgn_nom,rowid)
+
+
+PP_FULL1 <- PP_FULL %>%
+    separate_rows(orgn, sep = " ")%>%
+    group_by(index_OG_col) %>%
+    slice_min(match(orgn, reference_importance)) %>%
+  rename(tipo_orgn_nom = orgn) %>%
+  select(tipo_orgn_nom,index_OG_col)
+
+
+n_occur_FULL1 <- data.frame(table(PP_FULL1$index_OG_col)) #casos con doble repetición son casos que tienen dos palabras clave de la misma jerarquía (o que son iguales?), eliminarlos manualmente antes del merge -> Identificarlos como Var1 de n_occur_FULL1 refiere al rowid de PP_FULL1 y con el index_OG_col identificamos el caso que genera dos filas diferentes por repetición de palabra en la misma jerarquía (la misma palabra)
+
+PP_FULL1 <- PP_FULL1 %>%
+  filter(!duplicated(index_OG_col)) #Diferencia de 2 filas con la data original, significa que hay una duplicacion en la data original (con esto eliminamos el problema anterior, ya no lo tenemos por qué hacer manualmente) Estamos seleccionando los NO duplicados
+```
+
+Sacamos otra vez el rowid de PP_FULL para poder mergearlo con PP_FULL1 y tener las columnas de tipo_org_nom
+```{r}
+PP_FULL2 <- PP_FULL %>% 
+  #rowid_to_column() %>% 
+  left_join(PP_FULL1,by ="index_OG_col")
+
+n_occur_FULL2 <- data.frame(table(PP_FULL2$index_OG_col))
+```
+
+Poner etiqueta a los tipos de organizaciones según la identificación de palabras clave (Ejem: "vaso de leche", "comedor popular", "agropecuario", etc.)
+[PAUSA MOMENTANEA ESTE CHUNK]
+```{r, eval=FALSE}
+#Para Asentamiento Humano poner [AH] antes del número que representa una unidad
+#Para Asociación de Propietarios [AP] antes del número que representa una unidad
+#Para Vaso de Leche [VL] antes del número que representa una unidad
+#Para Grupos sobre Medio Ambiente [MA] antes del número que representa esta unidad
+#Para Grupos sobre Discapacidad [HC] antes del número que representa esta unidad
+#Para Club de Madres [CM] antes del número que representa esta unidadantes de 
+#Para Otro Tipo de Org. [OR] antes del número que representa una unidad
+#Para Urbanizaciones [UB] antes del número que representa una unidad
+#Para Grupos de Familias y/o Vecinos [FV] antes del número que representa una unidad
+#Para Grupos Adulto Mayor [SR] antes del número que representa una unidad
+#Para grupos Agropecuarios [AG] antes del número que representa una unidad
+#Para grupos Empresarios [AG] antes del número que representa una unidad
+
+PP_FULL3 <- PP_FULL2 %>%
+  mutate(tipo_orgn_mod =
+           case_when(str_detect(tipo_orgn_nom, "DISCAPACIDAD") | 
+                       str_detect(tipo_orgn_nom, "SORDOS") ~ 'HC',
+                     
+                     str_detect(tipo_orgn_nom, "CULTURAL") | 
+                       str_detect(tipo_orgn_nom, "CULTURA") ~ 'CT',
+                     
+                     str_detect(tipo_orgn_nom, "ADULTO") ~ 'SR',
+                     
+                     str_detect(tipo_orgn_nom, "MUNICIPALIDAD") ~ 'MN', 
+                     
+                     str_detect(tipo_orgn_nom, "COMEDOR") | 
+                       str_detect(tipo_orgn_nom, "COMEDORES")| 
+                       str_detect(tipo_orgn_nom, "COMEDORSARITA") |
+                       str_detect(tipo_orgn_nom, "DICECOA") ~ 'CP',
+                     
+                     str_detect(tipo_orgn_nom, "VASO") |
+                       str_detect(tipo_orgn_nom, "VDL") ~ 'VL',
+                     
+                     str_detect(tipo_orgn_nom, "MADRES") | 
+                       str_detect(tipo_orgn_nom, "MADRE") |
+                       str_detect(tipo_orgn_nom, "MADRESNUESTRO") |
+                       str_detect(tipo_orgn_nom, "BENDICION") ~ 'CM',
+                     
+                     str_detect(tipo_orgn_nom, "COORDINADORA") |
+                       str_detect(tipo_orgn_nom, "COORDINAROA") |
+                       str_detect(tipo_orgn_nom, "CORDINADORA") |
+                       str_detect(tipo_orgn_nom, "COORDIANDORA") ~ 'CD',
+                     
+ 
+                     str_detect(tipo_orgn_nom, "ASOCDE") |
+                       str_detect(tipo_orgn_nom, "ASOCTRABJ") |
+                       str_detect(tipo_orgn_nom, "TRABAJADORES") |
+                       str_detect(tipo_orgn_nom, "ASOCTRABAJADORES") |
+                       str_detect(tipo_orgn_nom, "RECICLADORES") |
+                       str_detect(tipo_orgn_nom, "BOMBEROS") |
+                       str_detect(tipo_orgn_nom, "TRANSPORTISTAS") |
+                       str_detect(tipo_orgn_nom, "MERCADO") |
+                       str_detect(tipo_orgn_nom, "COMERCANTES") |
+                       str_detect(tipo_orgn_nom, "MCDO") |
+                       str_detect(tipo_orgn_nom, "COMERCIANTES") |
+                       str_detect(tipo_orgn_nom, "SUTRAMUVES") |
+                       str_detect(tipo_orgn_nom, "MOTOTAXISTAS") |
+                       str_detect(tipo_orgn_nom, "AUTOMOTRICES") ~ 'TB',
+                     
+                     
+                     str_detect(tipo_orgn_nom, "EMPRESARIOS") |
+                       str_detect(tipo_orgn_nom, "MICROEMPRESARIOS") |
+                       str_detect(tipo_orgn_nom, "SAC") |
+                       str_detect(tipo_orgn_nom, "EIRL") |
+                       str_detect(tipo_orgn_nom, "ESTACIONAMIENTO") |
+                       str_detect(tipo_orgn_nom, "APEMIC") |
+                       str_detect(tipo_orgn_nom, "INDUSTRIALES") |
+                       str_detect(tipo_orgn_nom, "APEMIVES") |
+                       str_detect(tipo_orgn_nom, "APEMINAVES") |
+                       str_detect(tipo_orgn_nom, "APIMEAVES") ~ 'EM',
+                     
+                     str_detect(tipo_orgn_nom, "EDUCAION") |
+                       str_detect(tipo_orgn_nom, "EDUCACION") |
+                       str_detect(tipo_orgn_nom, "EDUCATIVO") |
+                       str_detect(tipo_orgn_nom, "IE") |
+                       str_detect(tipo_orgn_nom, "IEN") |
+                       str_detect(tipo_orgn_nom, "IESTP") |
+                       str_detect(tipo_orgn_nom, "CETPRO") ~ 'ED',
+                     
+                     str_detect(tipo_orgn_nom, "AMBIENTE") |#
+                       str_detect(tipo_orgn_nom, "AMBIENTAL") |
+                       str_detect(tipo_orgn_nom, "VERDES") |
+                       str_detect(tipo_orgn_nom, "VERDE") |
+                       str_detect(tipo_orgn_nom, "NATURALES") ~ 'MA',
+                     
+                     str_detect(tipo_orgn_nom, "APROCUAVES") |
+                       str_detect(tipo_orgn_nom, "APROSCUAVES") |
+                       str_detect(tipo_orgn_nom, "SALUD") |
+                       str_detect(tipo_orgn_nom, "APROSCUAVESASOCIACION") ~ 'SA',
+                     
+                    
+                     str_detect(tipo_orgn_nom, "FAMILIAS") |
+                       str_detect(tipo_orgn_nom, "FAMILIAR") |
+                       str_detect(tipo_orgn_nom, "FAMLFUNDADORES") |
+                       str_detect(tipo_orgn_nom, "WASI") ~ 'FA',
+                     
+                     str_detect(tipo_orgn_nom, "VECINOS") |
+                       str_detect(tipo_orgn_nom, "VECINAL") |
+                       str_detect(tipo_orgn_nom, "JJ") |
+                       str_detect(tipo_orgn_nom, "POBLADORES") |
+                       str_detect(tipo_orgn_nom, "VECINA") |
+                       str_detect(tipo_orgn_nom, "VECINALES") |
+                       str_detect(tipo_orgn_nom, "COMUNAL") | 
+                       str_detect(tipo_orgn_nom, "UPIS") ~ 'VC',
+                    
+                     
+                     str_detect(tipo_orgn_nom, "PROPIETARIOS") | #
+                       str_detect(tipo_orgn_nom, "ADJUDICATARIOS") |
+                       str_detect(tipo_orgn_nom, "ASOCADJCONJHABPACHACAMAC") |
+                       str_detect(tipo_orgn_nom, "ADJ") |
+                       str_detect(tipo_orgn_nom, "POSECIONARIOS") |
+                       str_detect(tipo_orgn_nom, "POSESIONARIOS") |
+                       str_detect(tipo_orgn_nom, "ASOC.VIV") |
+                       str_detect(tipo_orgn_nom, "ASOCVIVIENDA") | #
+                       str_detect(tipo_orgn_nom, "VIVIENDA") | #
+                       str_detect(tipo_orgn_nom, "ASOCVIV") |
+                       str_detect(tipo_orgn_nom, "ASOCVIVISTA") |
+                       str_detect(tipo_orgn_nom, "ASOCVIVSTA") |
+                       str_detect(tipo_orgn_nom, "HABITACIONAL") |
+                       str_detect(tipo_orgn_nom, "VIVI") |
+                       str_detect(tipo_orgn_nom, "VIV") ~ 'PR',
+                     
+                     str_detect(tipo_orgn_nom, "SEGURIDAD") ~ 'SG',
+                     
+                     str_detect(tipo_orgn_nom, "OBRAS") |
+                       str_detect(tipo_orgn_nom, "PISTAS") |
+                       str_detect(tipo_orgn_nom, "RIESGOS") |
+                       str_detect(tipo_orgn_nom, "RIESGO") | #
+                       str_detect(tipo_orgn_nom, "PROSERVICIOS") |
+                       str_detect(tipo_orgn_nom, "ASFALTADO") |
+                       str_detect(tipo_orgn_nom, "AGUA") ~ 'OB', 
+                     
+                     str_detect(tipo_orgn_nom, "AGROPECUARIO") |
+                       str_detect(tipo_orgn_nom, "AGROPECUARIA") |
+                       str_detect(tipo_orgn_nom, "AGROP") |
+                       str_detect(tipo_orgn_nom, "AGROSILVES") |
+                       str_detect(tipo_orgn_nom, "AGR") |
+                       str_detect(tipo_orgn_nom, "AGROPAGROSILVES") |
+                       str_detect(tipo_orgn_nom, "MENSAJERA") ~ 'AG',
+                     
+                     str_detect(tipo_orgn_nom, "HERMANDAD") |
+                       str_detect(tipo_orgn_nom, "REFORMADOR") ~ 'RE',
+                     
+                     str_detect(tipo_orgn_nom, "MUJERES") |
+                       str_detect(tipo_orgn_nom, "FEPOMUVES") |
+                       str_detect(tipo_orgn_nom, "CORDIMUVES") |
+                       str_detect(tipo_orgn_nom, "DIRIGENTAS") ~ 'GE',
+                
+                     str_detect(tipo_orgn_nom, "AAHH") |
+                       str_detect(tipo_orgn_nom, "AH") |
+                       str_detect(tipo_orgn_nom, "ASENTAMIENTO") |
+                       str_detect(tipo_orgn_nom, "AMPAAHH") |
+                       str_detect(tipo_orgn_nom, "PPJJ") |
+                       str_detect(tipo_orgn_nom, "AA") |
+                       str_detect(tipo_orgn_nom, "HH") ~ 'AH',
+                     
+                      str_detect(tipo_orgn_nom, "AMP") |
+                       str_detect(tipo_orgn_nom, "AP") |
+                       str_detect(tipo_orgn_nom, "AMPLIACION") |
+                       str_detect(tipo_orgn_nom, "URBANIZACION") |
+                       str_detect(tipo_orgn_nom, "URB") |
+                       str_detect(tipo_orgn_nom, "ST") |
+                       str_detect(tipo_orgn_nom, "SECTOR") |
+                       str_detect(tipo_orgn_nom, "GR") |
+                       str_detect(tipo_orgn_nom, "GRUPO") ~ 'UR',
+                     
+                     str_detect(tipo_orgn_nom, "COMISION") |
+                       str_detect(tipo_orgn_nom, "COOP") |
+                       str_detect(tipo_orgn_nom, "COOPDE") |
+                       str_detect(tipo_orgn_nom, "ORGANIZACION") |
+                       str_detect(tipo_orgn_nom, "DIRECTIVA") |
+                       str_detect(tipo_orgn_nom, "JUNTA") |
+                       str_detect(tipo_orgn_nom, "COMITE") |
+                       str_detect(tipo_orgn_nom, "BRIGADA") |
+                       str_detect(tipo_orgn_nom, "SECRETARIA") |
+                       str_detect(tipo_orgn_nom, "CENTRAL") |
+                       str_detect(tipo_orgn_nom, "ASOC") |
+                       str_detect(tipo_orgn_nom, "ASSOCIACION") |
+                       str_detect(tipo_orgn_nom, "ASOCIAICON") |
+                       str_detect(tipo_orgn_nom, "ASCIAICON") |
+                       str_detect(tipo_orgn_nom, "ASOCIACIAN") |
+                       str_detect(tipo_orgn_nom, "ASOCIACION") |
+                       str_detect(tipo_orgn_nom, "ASOCIACION") |
+                       str_detect(tipo_orgn_nom, "ASPROREP") |
+                       str_detect(tipo_orgn_nom, "CENTRO") |
+                       str_detect(tipo_orgn_nom, "REVISTA") |
+                       str_detect(tipo_orgn_nom, "JUVES") |
+                       str_detect(tipo_orgn_nom, "9696459") |
+                       str_detect(tipo_orgn_nom, "VELASCO") |
+                       str_detect(tipo_orgn_nom, "COMERCIAL") ~ 'OO'))
+     
+```
+
+
+```{r}
+PP_FULL2$tipo_orgn_mod = 
+  ifelse(PP_FULL2$tipo_orgn_nom  %in% c("DISCAPACIDAD","SORDOS"),"HC",
+         ifelse(PP_FULL2$tipo_orgn_nom %in% c("CULTURAL","CULTURA"), "CT",
+                ifelse(PP_FULL2$tipo_orgn_nom %in% c("ADULTO","JUBILADOS","EDAD","TERCERA"), "SR",
+                       ifelse(PP_FULL2$tipo_orgn_nom == "MUNICIPALIDAD", "MN",
+                              ifelse(PP_FULL2$tipo_orgn_nom %in% c("COMEDORES","COMEDOR", "COMEDORSARITA","DICECOA","OSBCOMEDOR","4868"),"CP",
+                                     ifelse(PP_FULL2$tipo_orgn_nom %in% c("VASO","VDL","PVL"),"VL",
+                                            ifelse(PP_FULL2$tipo_orgn_nom %in% c("MADRES","MADRE","MADRESNUESTRO","BENDICION"),"CM",
+                                                   ifelse(PP_FULL2$tipo_orgn_nom %in% c("COORDINADORA","COORDINAROA","CORDINADORA","COORDIANDORA"), "CD",
+                                                          ifelse(PP_FULL2$tipo_orgn_nom %in% c("ASOCDE","ASOCTRABJ","TRABAJADORES", "ASOCTRABAJADORES", "RECICLADORES","BOMBEROS","TRANSPORTISTAS","TRANSPORTE","MERCADO","COMERCANTES","MCDO","COMERCIANTES","SUTRAMUVES","MOTOTAXISTAS","AUTOMOTRICES","CONSTRUCCIVIL","CONAFOVICER"), "TB",
+                                                                 ifelse(PP_FULL2$tipo_orgn_nom %in% c("EMPRESARIOS","MICROEMPRESARIOS","SAC","EIRL","ESTACIONAMIENTO","APEMIC","APEMIVES","APEMINAVES","APIMEAVES", "INDUSTRIALES","ALIMENTARIA"),"EM",
+                                                                        ifelse(PP_FULL2$tipo_orgn_nom %in% c("EDUCAION","EDUCACION","EDUCATIVO","IE","IEN","IESTP","CETPRO","APEMICOVES","ESCOLARIZADO","GOTITAS"), "ED",
+                                                                               ifelse(PP_FULL2$tipo_orgn_nom %in% c("AMBIENTE","AMBIENTAL","VERDES","VERDE","NATURALES","SOSTENIBLE","ECOLOGIA"),"MA",
+                                                                                      ifelse(PP_FULL2$tipo_orgn_nom %in% c("APROCUAVES","APROSCUAVES","SALUD","APROSCUAVESASOCIACION"),"SA",
+                                                                                             ifelse(PP_FULL2$tipo_orgn_nom %in%
+                                                                                                      c("FAMILIAS","FAMILIAR","FAMLFUNDADORES","WASI"), "FA",
+                                                                                                    ifelse(PP_FULL2$tipo_orgn_nom %in% c("VECINOS","VECINAL","Vecinal","JJ", "POBLADORES","VECINA","VECINALES","COMUNAL","UPIS"), "VC",
+                                                                                                           ifelse(PP_FULL2$tipo_orgn_nom %in%  c("PROPIETARIOS","ADJUDICATARIOS","ADJUDICARIOS","ASOCADJCONJHABPACHACAMAC","ADJ","POSECIONARIOS","POSESIONARIOS","ASPROREP"), "PR",
+                                                                                                                  ifelse(PP_FULL2$tipo_orgn_nom %in% c("POSESIONARIOS","ASOC.VIV","ASOCVIVIENDA","VIVIENDA","ASOCVIV","ASOCVIVISTA","ASOCVIVSTA","HABITACIONAL","VIVI","VIV"), "VV",
+                                                                                                                  ifelse(PP_FULL2$tipo_orgn_nom == "SEGURIDAD", "SG", 
+                                                                                                                         ifelse(PP_FULL2$tipo_orgn_nom %in% c("OBRAS","PISTAS","RIESGOS","RIESGO","PROSERVICIOS","ASFALTADO","AGUA"), "OB",
+                                                                                                                                ifelse(PP_FULL2$tipo_orgn_nom %in% c("AGROPECUARIO","AGROPECUARIA","AGROINDUSTRIAL","AGROP","AGROP18","AGROSILVES","AGR","AGROPAGROSILVES","MENSAJERA","AGRPECUARIOS","AGROPAGROWUSSINES","VELASCO"),'AG',
+                                                                                                                                       ifelse(PP_FULL2$tipo_orgn_nom %in% c("HERMANDAD","REFORMADOR","3ACOMUNIDAD"), "RE",
+                                                                                                                                              ifelse(PP_FULL2$tipo_orgn_nom %in% c("MUJERES","FEPOMUVES","CORDIMUVES","DIRIGENTAS","CLOTILDES","030MUJERESCOL"), "GE",
+                                                                                                                                                     ifelse(PP_FULL2$tipo_orgn_nom %in% c("AAHH","ASENTAMIENTO","AH","AMPAAHH","PPJJ","AA","HH","PUEBLO"), "AH",
+                                                                                                                                                            ifelse(PP_FULL2$tipo_orgn_nom %in% c("AMP","AP","AH","AMPLIACION","URBANIZACION","URB","ST","SECTOR","GR","GRUPO","Grupo","CALIFORNIA","DIRECTIVA"), "UR", "OO"))))))))))))))))))))))))
+
+
+PP_FULL2$tipo_orgn_mod[748]<-"CM"
+PP_FULL2$tipo_orgn_mod[1534]<-"CM"
+PP_FULL2$tipo_orgn_mod[1613]<-"CM"
+PP_FULL2$tipo_orgn_mod[153]<-"CM"
+PP_FULL2$tipo_orgn_mod[156]<-"CM"
+PP_FULL2$tipo_orgn_mod[157]<-"CM"
+PP_FULL2$tipo_orgn_mod[1214]<-"CM"
+PP_FULL2$tipo_orgn_mod[1216]<-"CM"
+PP_FULL2$tipo_orgn_mod[1458]<-"CM"
+PP_FULL2$tipo_orgn_mod[1682]<-"CM"
+PP_FULL2$tipo_orgn_mod[2538]<-"CM"
+PP_FULL2$tipo_orgn_mod[2541]<-"CM"
+PP_FULL2$tipo_orgn_mod[1564]<-"CM"
+PP_FULL2$tipo_orgn_mod[1617]<-"CM"
+PP_FULL2$tipo_orgn_mod[1141]<-"CM"
+PP_FULL2$tipo_orgn_mod[1142]<-"CM"
+
+PP_FULL2$tipo_orgn_mod[2250]<-"OB"
+PP_FULL2$tipo_orgn_mod[2837]<-"OB"
+PP_FULL2$tipo_orgn_mod[2846]<-"OB"
+
+PP_FULL2$tipo_orgn_mod[326:327]<-"VL"
+PP_FULL2$tipo_orgn_mod[1350:1351]<-"VL"
+
+PP_FULL2$tipo_orgn_mod[2302:2303]<-"VL"
+
+PP_FULL2$tipo_orgn_mod[1821:1822]<-"SG"
+PP_FULL2$tipo_orgn_mod[1348:1349]<-"SG"
+
+PP_FULL2$tipo_orgn_mod[405:406]<-"SG"
+PP_FULL2$tipo_orgn_mod[1355:1356]<-"SG"
+
+
+PP_FULL2$tipo_orgn_mod[2304:2305]<-"SG"
+
+PP_FULL2$tipo_orgn_mod[86:87]<-"OO"
+
+PP_FULL2$tipo_orgn_mod[993:994]<-"OO"
+
+PP_FULL2$tipo_orgn_mod[2893]<-"PR"
+PP_FULL2$tipo_orgn_mod[2918]<-"PR"
+
+PP_FULL2$tipo_orgn_mod[3120]<-"PR"
+
+PP_FULL2$tipo_orgn_mod[3234:3235]<-"MA"
+
+PP_FULL2$tipo_orgn_mod[3306:3307]<-"UR"
+
+PP_FULL2$tipo_orgn_mod[3026:3027]<-"EM"
+
+PP_FULL2$tipo_orgn_mod[3159:3160]<-"EM"
+```
+
+
+
+Subset de variables: organizaciones y variables de año / tipo de organización y variables de año
+```{r}
+PP_SUBSET <- PP_FULL2[,c(10,2:7)]
+#distinct(PP_SUBSET, tipo_orgn_mod, AÑO2015, AÑO2016, .keep_all = TRUE)
+```
+
+Juntar filas según etiqueta de organizaciones / tipo de organizaciones en aggregate
+```{r}
+PP_SUBSET[,c(2:7)] <- sapply(PP_SUBSET[c(2:7)],as.numeric)
+Resumen_Tipo_Org<- aggregate(. ~ tipo_orgn_mod, data = PP_SUBSET, sum)
+
+library(janitor)
+Resumen_Tipo_Org <- Resumen_Tipo_Org %>%
+  adorn_totals("row") %>%
+  adorn_totals("col")
+
+Resumen_Tipo_Org <- as.data.frame(Resumen_Tipo_Org)
+Resumen_Tipo_Org$Total[26]<-NA
+Resumen_Tipo_Org <- Resumen_Tipo_Org[order(Resumen_Tipo_Org$Total, decreasing = TRUE),]
+```
+
+Exportar Tablas General
+```{r}
+write.table(Resumen_Tipo_Org, file = "Tabla_General.txt", sep = ",", quote = FALSE, row.names = FALSE)
+```
+
+Gráficos
+```{r}
+TablaGraf1 <- as.data.frame(t(Resumen_Tipo_Org))
+colnames(TablaGraf1) <- TablaGraf1[c(1),]
+TablaGraf1 <- TablaGraf1[-c(1),]
+TablaGraf1$año <- row.names(TablaGraf1)
+TablaGraf1 <- TablaGraf1[c(27,1:26)]
+TablaGraf1 <- TablaGraf1[-c(7),]
+TablaGraf1[,c(2:27)] <- sapply(TablaGraf1[c(2:27)],as.numeric)
+
+TablaGraf1$media = TablaGraf1$Total/25
+TablaGraf1$mediana <- apply(TablaGraf1[,2:26], 1, median, na.rm=T)
+```
+
+
+```{r}
+#1. Grafica de agentes participantes a través de los años
+
+library(plotly)
+fig1 <- plot_ly(TablaGraf1, type = 'scatter', mode = 'lines+markers')%>%
+  add_trace(x = ~año, y = ~Total, name = 'Variación', width = 4)
+fig1 <- fig1 %>% layout(title = 'Variación de Agentes Participantes', plot_bgcolor = "#e5ecf6")
+fig1 <- fig1 %>% layout(xaxis = list(title = 'Proceso de Presupuesto Participativo'))
+fig1 <- fig1 %>% layout(yaxis = list(title = 'Total de Agentes Participantes'))
+fig1
+```
+
+
+```{r}
+#2. Media y Mediana anual de la cantidad de agentes participantes por organización
+
+library(plotly)
+fig1.1 <- plot_ly(TablaGraf1, type = 'scatter', mode = 'lines+markers')%>%
+  add_trace(x = ~año, y = ~media, name = 'Media', width = 4)%>%
+  add_trace(x = ~año, y = ~mediana, name = 'Mediana', width = 4)
+fig1.1 <- fig1.1 %>% layout(title = 'Media y Mediana anual de Participación en el PP', plot_bgcolor = "#e5ecf6")
+fig1.1 <- fig1.1 %>% layout(xaxis = list(title = 'Proceso de Presupuesto Participativo'))
+fig1.1 <- fig1.1 %>% layout(yaxis = list(title = 'Agentes Participantes'))
+fig1.1
+```
+
+```{r}
+#3. Media y Mediana anual de la cantidad de agentes participantes por tipo organización + Participación por tipo de organización 
+
+library(plotly)
+fig2 <- plot_ly(TablaGraf1, type = 'scatter', mode = 'lines+markers')%>%
+  add_trace(x = ~año, y = ~UR, name = 'Urbano', width = 4)%>%
+  add_trace(x = ~año, y = ~CP, name = 'Comedor', width = 4)%>%
+  add_trace(x = ~año, y = ~CM, name = 'Club de Madres', width = 4)%>%
+  add_trace(x = ~año, y = ~VC, name = 'Vecinos', width = 4)%>%
+  add_trace(x = ~año, y = ~AH, name = 'AA.HH.', width = 4)%>%
+  add_trace(x = ~año, y = ~VV, name = 'Grupos de Vivienda', width = 4)%>%
+  add_trace(x = ~año, y = ~MA, name = 'Ambientales', width = 4)%>%
+  add_trace(x = ~año, y = ~SR, name = 'Adulto Mayor', width = 4)%>%
+  add_trace(x = ~año, y = ~VL, name = 'Vaso de Leche', width = 4)%>%
+  add_trace(x = ~año, y = ~OO, name = 'Otros', width = 4)%>%
+  add_trace(x = ~año, y = ~AG, name = 'Agropecuarias', width = 4)%>%
+  add_trace(x = ~año, y = ~OB, name = 'Obras y Vías', width = 4)%>%
+  add_trace(x = ~año, y = ~TB, name = 'Trabajadores', width = 4)%>%
+  add_trace(x = ~año, y = ~GE, name = 'Género', width = 4)%>%
+  add_trace(x = ~año, y = ~MN, name = 'Municipalidad', width = 4)%>%
+  add_trace(x = ~año, y = ~PR, name = 'Propietarios', width = 4)%>%
+  add_trace(x = ~año, y = ~CD, name = 'Coordinadoras', width = 4)%>%
+  add_trace(x = ~año, y = ~EM, name = 'Empresas', width = 4)%>%
+  add_trace(x = ~año, y = ~SG, name = 'Seguridad', width = 4)%>%
+  add_trace(x = ~año, y = ~FA, name = 'Familias', width = 4)%>%
+  add_trace(x = ~año, y = ~ED, name = 'Educación', width = 4)%>%
+  add_trace(x = ~año, y = ~HC, name = 'Discapacidad', width = 4)%>%
+  add_trace(x = ~año, y = ~RE, name = 'Religión', width = 4)%>%
+  add_trace(x = ~año, y = ~SA, name = 'Salud', width = 4)%>%
+  add_trace(x = ~año, y = ~CT, name = 'Cultura', width = 4)%>%
+  add_trace(x = ~año, y = ~media, name = 'Media', width = 4)%>%
+  add_trace(x = ~año, y = ~mediana, name = 'Mediana', width = 4)
+fig2 <- fig2 %>% layout(title = 'Variación de Participación por Tipo de Organización', plot_bgcolor = "#e5ecf6")
+fig2 <- fig2 %>% layout(xaxis = list(title = 'Proceso de Presupuesto Participativo'))
+fig2 <- fig2 %>% layout(yaxis = list(title = 'Agentes Participantes'))
+fig2
+```
+
+```{r}
+library(plotly)
+fig3 <- plot_ly(TablaGraf1, type = 'scatter', mode = 'lines+markers')%>%
+  add_trace(x = ~año, y = ~UR, name = 'Urbano', width = 4)%>%
+  add_trace(x = ~año, y = ~CP, name = 'Comedores', width = 4)%>%
+  add_trace(x = ~año, y = ~CM, name = 'Club de Madres', width = 4)%>%
+  add_trace(x = ~año, y = ~AH, name = 'AA.HH.', width = 4)%>%
+  add_trace(x = ~año, y = ~VL, name = 'Vaso de Leche', width = 4)
+  #add_trace(x = ~año, y = ~media, name = 'Media', width = 4)%>%
+  #add_trace(x = ~año, y = ~mediana, name = 'Mediana', width = 4)
+  
+
+fig3 <- fig3 %>% layout(title = 'Variación de Participación por Tipo de Organización', plot_bgcolor = "#e5ecf6")
+fig3 <- fig3 %>% layout(xaxis = list(title = 'Proceso de Presupuesto Participativo'))
+fig3 <- fig3 %>% layout(yaxis = list(title = 'Total de Agentes Participantes'))
+fig3
+```
+
