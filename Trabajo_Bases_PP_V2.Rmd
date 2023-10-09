@@ -427,11 +427,12 @@ reference_importance <- c("COMERCIAL",
                           "APIMEAVES",
                           "9696459",
                           "DICECOA",
-                          "CALIFORNIA",
-
                           "3ACOMUNIDAD",
                           "CONAFOVICER",
-                         
+                          "PVL",
+                          "VASO",
+                          "VDL",
+                          
                           "DISCAPACIDAD",
                           "SORDOS",
                           
@@ -450,8 +451,6 @@ reference_importance <- c("COMERCIAL",
                           "EDAD",
                           "TERCERA",
                           
-                          "VASO",
-                          "VDL",
                           
                           "MADRES",
                           "MADRE",
@@ -541,7 +540,6 @@ reference_importance <- c("COMERCIAL",
                           "TRABAJ",
                           "TRABJ",
                           
-                          "SEGURIDAD",
                           
                           "OBRAS",
                           "PISTAS",
@@ -572,7 +570,6 @@ reference_importance <- c("COMERCIAL",
                           "ASENTAMIENTO",
                           "AMPAAHH",
                           "PPJJ",
-                          
                           "PUEBLO",
                           
                           "FAMILIAS", 
@@ -616,6 +613,7 @@ reference_importance <- c("COMERCIAL",
                           
                           
                           "VELASCO",
+                          "CALIFORNIA",
                           
                           "CENTRO",
                           
@@ -634,15 +632,13 @@ PP_FULL1 <- PP_FULL %>%
   rename(tipo_orgn_nom = orgn) %>%
   select(tipo_orgn_nom,rowid)
 
-
-n_occur_FULL1 <- data.frame(table(PP_FULL1$rowid)) #casos con doble repetición son casos que tienen dos palabras clave de la misma jerarquía, eliminarlos manualmente antes del merge -> Identificarlos como Var1 de n_occur_FULL1 refiere al rowid de PP_FULL1 y con el index_OG_col identificamos el caso que genera dos filas diferentes por repetición de palabra en la misma jerarquía (la misma palabra)
+n_occur_FULL1 <- data.frame(table(PP_FULL1$rowid)) #casos con doble repetición son casos que tienen dos palabras clave de la misma jerarquía (o que son iguales?), eliminarlos manualmente antes del merge -> Identificarlos como Var1 de n_occur_FULL1 refiere al rowid de PP_FULL1 y con el index_OG_col identificamos el caso que genera dos filas diferentes por repetición de palabra en la misma jerarquía (la misma palabra)
 
 PP_FULL1 <- PP_FULL1 %>%
   filter(!duplicated(rowid)) #Diferencia de 2 filas con la data original, significa que hay una duplicacion en la data original (con esto eliminamos el problema anterior, ya no lo tenemos por qué hacer manualmente)
 ```
 
 Sacamos otra vez el rowid de PP_FULL para poder mergearlo con PP_FULL1 y tener las columnas de tipo_org_nom
-
 ```{r}
 PP_FULL2 <- PP_FULL %>% 
   rowid_to_column() %>% 
@@ -652,10 +648,7 @@ n_occur_FULL2 <- data.frame(table(PP_FULL2$rowid))
 ```
 
 Poner etiqueta a los tipos de organizaciones según la identificación de palabras clave (Ejem: "vaso de leche", "comedor popular", "agropecuario", etc.)
-
-
 [PAUSA MOMENTANEA ESTE CHUNK]
-
 ```{r}
 #Para Asentamiento Humano poner [AH] antes del número que representa una unidad
 #Para Asociación de Propietarios [AP] antes del número que representa una unidad
@@ -858,11 +851,10 @@ PP_FULL2$tipo_orgn_mod =
                 ifelse(PP_FULL2$tipo_orgn_nom %in% c("ADULTO","JUBILADOS","EDAD","TERCERA"), "SR",
                        ifelse(PP_FULL2$tipo_orgn_nom == "MUNICIPALIDAD", "MN",
                               ifelse(PP_FULL2$tipo_orgn_nom %in% c("COMEDORES","COMEDOR", "COMEDORSARITA","DICECOA","OSBCOMEDOR"),"CP",
-                                     ifelse(PP_FULL2$tipo_orgn_nom %in% c("VASO","VDL"),"VL",
+                                     ifelse(PP_FULL2$tipo_orgn_nom %in% c("VASO","VDL","PVL"),"VL",
                                             ifelse(PP_FULL2$tipo_orgn_nom %in% c("MADRES","MADRE","MADRESNUESTRO","BENDICION"),"CM",
                                                    ifelse(PP_FULL2$tipo_orgn_nom %in% c("COORDINADORA","COORDINAROA","CORDINADORA","COORDIANDORA"), "CD",
                                                           ifelse(PP_FULL2$tipo_orgn_nom %in% c("ASOCDE","ASOCTRABJ","TRABAJADORES", "ASOCTRABAJADORES", "RECICLADORES","BOMBEROS","TRANSPORTISTAS","TRANSPORTE","MERCADO","COMERCANTES","MCDO","COMERCIANTES","SUTRAMUVES","MOTOTAXISTAS","AUTOMOTRICES","CONSTRUCCIVIL","CONAFOVICER"), "TB",
-                                                          ifelse(PP_FULL2$tipo_orgn_nom %in% c("ASOCDE","ASOCTRABJ","TRABAJADORES", "ASOCTRABAJADORES", "RECICLADORES","BOMBEROS","TRANSPORTISTAS","TRANSPORTE","MERCADO","COMERCANTES","MCDO","COMERCIANTES","SUTRAMUVES","MOTOTAXISTAS","AUTOMOTRICES","CONSTRUCCIVIL"), "TB",
                                                                  ifelse(PP_FULL2$tipo_orgn_nom %in% c("EMPRESARIOS","MICROEMPRESARIOS","SAC","EIRL","ESTACIONAMIENTO","APEMIC","APEMIVES","APEMINAVES","APIMEAVES", "INDUSTRIALES","ALIMENTARIA"),"EM",
                                                                         ifelse(PP_FULL2$tipo_orgn_nom %in% c("EDUCAION","EDUCACION","EDUCATIVO","IE","IEN","IESTP","CETPRO"), "ED",
                                                                                ifelse(PP_FULL2$tipo_orgn_nom %in% c("AMBIENTE","AMBIENTAL","VERDES","VERDE","NATURALES","SOSTENIBLE","ECOLOGIA"),"MA",
@@ -908,18 +900,6 @@ PP_FULL2$tipo_orgn_mod[325:326]<-"OO"
 PP_FULL2$tipo_orgn_mod[440:441]<-"OO"
 PP_FULL2$tipo_orgn_mod[475]<-"PR"
 PP_FULL2$tipo_orgn_mod[476]<-"PR"
-=======
-                                                                                                           ifelse(PP_FULL2$tipo_orgn_nom %in%  c("PROPIETARIOS","ADJUDICATARIOS","ADJUDICARIOS","ASOCADJCONJHABPACHACAMAC","ADJ","POSECIONARIOS","POSESIONARIOS"), "PR",
-                                                                                                                  ifelse(PP_FULL2$tipo_orgn_nom %in% c("POSESIONARIOS","ASOC.VIV","ASOCVIVIENDA","VIVIENDA","ASOCVIV","ASOCVIVISTA","ASOCVIVSTA","HABITACIONAL","VIVI","VIV","ASPROREP"), "VV",
-                                                                                                                  ifelse(PP_FULL2$tipo_orgn_nom == "SEGURIDAD", "SG", 
-                                                                                                                         ifelse(PP_FULL2$tipo_orgn_nom %in% c("OBRAS","PISTAS","RIESGOS","RIESGO","PROSERVICIOS","ASFALTADO","AGUA"), "OB",
-                                                                                                                                ifelse(PP_FULL2$tipo_orgn_nom %in% c("AGROPECUARIO","AGROPECUARIA","AGROINDUSTRIAL","AGROP","AGROP18","AGROSILVES","AGR","AGROPAGROSILVES","MENSAJERA","AGRPECUARIOS","AGROPAGROWUSSINES","VELASCO"),'AG',
-                                                                                                                                       ifelse(PP_FULL2$tipo_orgn_nom %in% c("HERMANDAD","REFORMADOR"), "RE",
-                                                                                                                                              ifelse(PP_FULL2$tipo_orgn_nom %in% c("MUJERES","FEPOMUVES","CORDIMUVES","DIRIGENTAS","CLOTILDES","030MUJERESCOL"), "GE",
-                                                                                                                                                     ifelse(PP_FULL2$tipo_orgn_nom %in% c("AAHH","ASENTAMIENTO","AH","AMPAAHH","PPJJ","AA","HH"), "AH",
-                                                                                                                                                            ifelse(PP_FULL2$tipo_orgn_nom %in% c("AMP","AP","AH","AMPLIACION","URBANIZACION","URB","ST","SECTOR","GR","GRUPO","CALIFORNIA","DIRECTIVA"), "UR", "OO"))))))))))))))))))))))))
-                                                                                                                      
-
 ```
 
 
@@ -942,7 +922,6 @@ Resumen_Tipo_Org <- Resumen_Tipo_Org %>%
 
 Resumen_Tipo_Org <- as.data.frame(Resumen_Tipo_Org)
 Resumen_Tipo_Org$Total[26]<-NA
-
 Resumen_Tipo_Org <- Resumen_Tipo_Org[order(Resumen_Tipo_Org$Total, decreasing = TRUE),]
 ```
 
@@ -980,6 +959,8 @@ fig1
 
 
 ```{r}
+#2. Media y Mediana anual de la cantidad de agentes participantes por organización
+
 library(plotly)
 fig1.1 <- plot_ly(TablaGraf1, type = 'scatter', mode = 'lines+markers')%>%
   add_trace(x = ~año, y = ~media, name = 'Media', width = 4)%>%
@@ -991,6 +972,8 @@ fig1.1
 ```
 
 ```{r}
+#3. Media y Mediana anual de la cantidad de agentes participantes por tipo organización + Participación por tipo de organización 
+
 library(plotly)
 fig2 <- plot_ly(TablaGraf1, type = 'scatter', mode = 'lines+markers')%>%
   add_trace(x = ~año, y = ~UR, name = 'Urbano', width = 4)%>%
